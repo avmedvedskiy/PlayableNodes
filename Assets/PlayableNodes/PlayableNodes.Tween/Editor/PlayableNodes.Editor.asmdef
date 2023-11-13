@@ -1,0 +1,19 @@
+{
+    "name": "PlayableNodes.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9f0c90d7887a4ed282ba08e78c705b7e",
+        "GUID:2c3d45ad85e71434dbd735a1d8b8d77a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

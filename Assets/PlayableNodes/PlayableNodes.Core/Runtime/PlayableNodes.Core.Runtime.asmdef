@@ -1,0 +1,17 @@
+{
+    "name": "PlayableNodes.Core.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "ManagedReference.Runtime",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
