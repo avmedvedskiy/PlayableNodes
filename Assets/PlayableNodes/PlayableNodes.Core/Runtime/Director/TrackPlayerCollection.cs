@@ -5,10 +5,12 @@ using UnityEngine;
 
 namespace PlayableNodes
 {
-    public class TrackPlayerCollection : BaseTrackPlayer
+    public class TrackPlayerCollection : MonoBehaviour, ITracksPlayer
     {
         [SerializeField] private List<Track> _tracks;
-        public override UniTask PlayAsync(string trackName)
+        public IReadOnlyList<Track> Tracks => _tracks;
+
+        public UniTask PlayAsync(string trackName)
         {
             foreach (var track in _tracks)
             {
@@ -20,7 +22,7 @@ namespace PlayableNodes
             return UniTask.CompletedTask;
         }
         
-        public override float TotalDuration(string trackName)
+        public float TotalDuration(string trackName)
         {
             var track = _tracks.Find(x => x.Name == trackName);
             return track?.TotalDuration() ?? 0f;

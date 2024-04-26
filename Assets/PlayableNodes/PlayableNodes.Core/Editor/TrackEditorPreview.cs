@@ -25,43 +25,61 @@ namespace PlayableNodes
         private static void OnPlayModeStateChanged(PlayModeStateChange obj)
         {
             if (IsPreviewing)
+            {
+                DOTweenEditorPreview.Stop();
                 StopPreview();
+            }
         }
 
-        public static async void PreviewAnimation(Object player, string animationName, SerializedProperty track)
+        public static async void PreviewAnimation(ITracksPlayer player, string animationName)
         {
-            var trackDirector = (BaseTrackPlayer)player;
             TokenSource = new CancellationTokenSource();
             ForceEditorUpdate(TokenSource.Token);
             Undo.IncrementCurrentGroup();
             Undo.SetCurrentGroupName($"Preview animation {animationName}");
             PreviewingGroupId = Undo.GetCurrentGroup();
-            //Undo.RegisterFullObjectHierarchyUndo(player, player.name);
-            var nodes = track.FindPropertyRelative(TrackHelper.TRACK_NODES_PROPERTY);
-            for (int i = 0; i < nodes.arraySize; i++)
-            {
-                var context = nodes.GetArrayElementAtIndex(i).FindPropertyRelative(TrackHelper.CONTEXT_PROPERTY);
-                if (context.objectReferenceValue != null)
-                {
-                    Undo.RegisterFullObjectHierarchyUndo(context.objectReferenceValue,
-                        context.objectReferenceValue.name);
-                    if (context.objectReferenceValue is Graphic graphic)
-                        Graphics.Add(graphic);
-                }
-            }
-
             IsPreviewing = true;
+            
+            //cache all items
+            RegisterContextForPreview(player);
+            
             DOTweenEditorPreview.Start();
             await UniTask.WhenAny(
-                trackDirector.PlayAsync(animationName),
-                UniTask.WaitForSeconds(trackDirector.TotalDuration(animationName) + 1f)); //for any exceptions in editor
+                player.PlayAsync(animationName),
+                UniTask.WaitForSeconds(player.TotalDuration(animationName) + 1f)); //for any exceptions in editor
             StopPreview();
+            IsPreviewing = false;
+        }
+        
+        private static void RegisterContextForPreview(ITracksPlayer player)
+        {
+            foreach (var track in player.Tracks)
+            {
+                foreach (var node in track.Nodes)
+                {
+                    if(node.Context != null)
+                        RegisterContextForPreview(node.Context);
+                }
+            }
+        }
+        
+        private static void RegisterContextForPreview(Object context)
+        {
+            switch (context)
+            {
+                case ITracksPlayer tracksPlayer:
+                    RegisterContextForPreview(tracksPlayer);
+                    break;
+                case Graphic graphic:
+                    Graphics.Add(graphic);
+                    break;
+            }
+            Undo.RegisterFullObjectHierarchyUndo(context, context.name);
         }
 
         private static void StopPreview()
         {
-            DOTweenEditorPreview.Stop();
-            IsPreviewing = false;
+            //DOTweenEditorPreview.Stop();
             if (PreviewingGroupId != 0)
                 Undo.RevertAllDownToGroup(PreviewingGroupId);
             //Repaint();

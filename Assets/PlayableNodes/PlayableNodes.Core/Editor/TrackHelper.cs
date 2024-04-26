@@ -10,6 +10,7 @@ namespace PlayableNodes
         public const string IS_ACTIVE_PROPERTY = "_isActive";
         public const string NAME_PROPERTY = "_name";
         public const string ANIMATIONS_PROPERTY = "_animations";
+        public const string ENABLE_PROPERTY = "_enable";
         
         public const string BINDING_REFERENCES = "_bindingReferences";
         public const string REFERENCE_PATH = "_path";

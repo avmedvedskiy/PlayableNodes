@@ -1,0 +1,13 @@
+{
+  "name": "com.avmedvedskiy.playblenodes.core",
+  "displayName": "Playable Node Core",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "author": "avmedvedskiy",
+  "description": "Playable Node Core",
+  "keywords": [
+    "animations",
+    "nodes",
+	"dynamic"
+  ]
+}

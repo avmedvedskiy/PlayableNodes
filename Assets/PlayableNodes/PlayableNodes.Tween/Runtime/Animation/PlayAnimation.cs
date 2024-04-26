@@ -7,9 +7,9 @@ namespace PlayableNodes.Animations
     [Serializable]
     public class PlayAnimation : TargetAnimation<Animation>
     {
-        [SerializeField,AnimationNameSelect] private string _animationName;
+        [SerializeField] private string _animationName;
 
-        public override UniTask PlayAsync() =>
+        protected override UniTask Play() =>
             Target.PlayAsync(_animationName);
     }
 }

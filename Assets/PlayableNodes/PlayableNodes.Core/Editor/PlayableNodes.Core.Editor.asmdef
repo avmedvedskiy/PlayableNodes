@@ -2,8 +2,9 @@
     "name": "PlayableNodes.Core.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:54df6742947601f4ea7a7dbc4d611283"
+        "UniTask",
+        "PlayableNodes.Core.Runtime",
+        "ManagedReference.Editor"
     ],
     "includePlatforms": [
         "Editor"

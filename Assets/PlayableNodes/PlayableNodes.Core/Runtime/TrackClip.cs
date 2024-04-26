@@ -30,7 +30,7 @@ namespace PlayableNodes
         public IReadOnlyList<Track> Tracks => _tracks;
         public List<BindingReference> Bindings => _bindingReferences;
 
-        public Track FindTrack(string trackName) => _tracks.Find(x => x.Name == trackName);
+        internal Track FindTrack(string trackName) => _tracks.Find(x => x.Name == trackName);
 
     }
 }

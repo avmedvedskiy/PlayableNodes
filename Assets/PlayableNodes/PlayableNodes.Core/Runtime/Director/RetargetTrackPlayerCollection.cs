@@ -8,12 +8,13 @@ namespace PlayableNodes.Experimental
     /// <summary>
     /// Experimental only, not support direct link to scene objects in scene
     /// </summary>
-    public class RetargetTrackPlayerCollection : BaseTrackPlayer
+    public class RetargetTrackPlayerCollection : MonoBehaviour, ITracksPlayer
     {
         [SerializeField] private TrackClip _clip;
         [SerializeField] private List<Object> _bindings;
-        
-        public override UniTask PlayAsync(string trackName)
+        public IReadOnlyList<Track> Tracks => _clip.Tracks;
+
+        public UniTask PlayAsync(string trackName)
         {
             Retarget();
             foreach (var track in _clip.Tracks)
@@ -39,7 +40,7 @@ namespace PlayableNodes.Experimental
             }
         }
 
-        public override float TotalDuration(string trackName)
+        public float TotalDuration(string trackName)
         {
             var track = _clip.FindTrack(trackName);
             return track?.TotalDuration() ?? 0f;

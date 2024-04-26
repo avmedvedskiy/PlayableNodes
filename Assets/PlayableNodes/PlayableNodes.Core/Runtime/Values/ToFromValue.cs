@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace PlayableNodes.Values
@@ -15,6 +16,7 @@ namespace PlayableNodes.Values
         [SerializeField] private ToFromType _type;
         public ToFromType Type => _type;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator T(ToFromValue<T> source)
         {
             return source._value;

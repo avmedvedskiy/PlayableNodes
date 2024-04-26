@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Internal;
 
 namespace PlayableNodes
 {
@@ -22,7 +23,7 @@ namespace PlayableNodes
         {
             _scale = scale;
             _ease = ease;
-            _curve = new(new Keyframe(0f, 0f), new Keyframe(1f, 1f));
+            _curve = null;
         }
 
         public Easing(AnimationCurve curve, float scale)

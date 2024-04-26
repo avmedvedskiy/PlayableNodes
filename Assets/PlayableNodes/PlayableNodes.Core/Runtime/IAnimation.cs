@@ -1,3 +1,4 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Object = UnityEngine.Object;
 
@@ -8,9 +9,10 @@ namespace PlayableNodes
     /// </summary>
     public interface IAnimation
     {
+        bool Enable { get; }
         float Delay { get; }
         float Duration { get; }
-        UniTask PlayAsync();
+        UniTask PlayAsync(CancellationToken cancellationToken = default);
         void SetTarget(Object target);
     }
 }

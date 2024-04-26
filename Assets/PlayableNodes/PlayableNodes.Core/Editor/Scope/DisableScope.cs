@@ -4,14 +4,17 @@ namespace PlayableNodes
 {
     public class DisableScope : EditorGUIScope
     {
+        private readonly bool _previousState;
+
         public DisableScope(bool enabled)
         {
-            GUI.enabled = enabled;
+            _previousState = GUI.enabled;
+            GUI.enabled = _previousState && enabled;
         }
         
         protected override void CloseScope()
         {
-            GUI.enabled = true;
+            GUI.enabled = _previousState;
         }
     }
 }
