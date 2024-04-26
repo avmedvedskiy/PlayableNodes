@@ -5,14 +5,14 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "8820f2bd92a9428882682bf2257856f50145ce51"
+      "hash": "93e9cc6aec37198a74287ac6b464b212e5a8b381"
     },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "5cc97c7f0085624b6ef57853d70b404440060cef"
+      "hash": "2e225fb8414e023df2aa3acae2ef225471981316"
     },
     "com.unity.collab-proxy": {
       "version": "2.2.0",
@@ -40,8 +40,8 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {
-        "com.unity.ide.visualstudio": "2.0.21",
-        "com.unity.ide.rider": "3.0.25",
+        "com.unity.ide.visualstudio": "2.0.22",
+        "com.unity.ide.rider": "3.0.27",
         "com.unity.ide.vscode": "1.2.5",
         "com.unity.editorcoroutines": "1.0.0",
         "com.unity.performance.profile-analyzer": "1.2.2",
@@ -50,7 +50,7 @@
       }
     },
     "com.unity.ide.rider": {
-      "version": "3.0.25",
+      "version": "3.0.27",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -59,7 +59,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.21",
+      "version": "2.0.22",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -119,7 +119,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.7.5",
+      "version": "1.7.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -138,16 +138,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "com.unity.visualscripting": {
-      "version": "1.9.1",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
