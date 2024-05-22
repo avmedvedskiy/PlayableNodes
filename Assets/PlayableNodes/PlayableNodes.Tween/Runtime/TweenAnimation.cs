@@ -11,10 +11,12 @@ namespace PlayableNodes
     public abstract class TweenAnimation<T> : IAnimation where T : Object
     {
         [SerializeField, HideInInspector] private bool _enable = true;
+        [SerializeField, HideInInspector] private int _pin;
         [SerializeField] private float _duration = 0.33f;
         [SerializeField] private float _delay;
         [SerializeField] private Easing _ease = Easing.Default;
         [field: NonSerialized] public T Target { get; private set; }
+        public int Pin => _pin;
         public bool Enable => _enable;
         public float Delay => _delay;
         public float Duration
@@ -23,7 +25,10 @@ namespace PlayableNodes
             protected set => _duration = value;
         }
 
-        public UniTask PlayAsync(CancellationToken cancellationToken = default) => RunTween().AwaitForComplete(cancellationToken: cancellationToken);
+        public UniTask PlayAsync(CancellationToken cancellationToken = default) => 
+            RunTween()
+            .AwaitForComplete(TweenCancelBehaviour.CompleteWithSequenceCallbackAndCancelAwait, cancellationToken)
+            .SuppressCancellationThrow();
 
         private Tweener RunTween() =>
             GenerateTween()

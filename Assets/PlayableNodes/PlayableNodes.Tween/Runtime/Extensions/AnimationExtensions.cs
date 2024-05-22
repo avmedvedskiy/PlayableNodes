@@ -1,3 +1,4 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using UnityEngine;
@@ -6,7 +7,8 @@ namespace PlayableNodes.Animations
 {
     public static class AnimationExtensions
     {
-        private static async UniTask PlayPreviewAsync(this Animation animation, string animationName)
+        private static async UniTask PlayPreviewAsync(this Animation animation, string animationName,
+            CancellationToken cancellationToken = default)
         {
             var clip = animation.GetClip(animationName);
             if (clip == null)
@@ -25,20 +27,32 @@ namespace PlayableNodes.Animations
                 animation.Sample();
                 time += Time.deltaTime;
 
-                if (time >= duration)
+                if (time >= duration || cancellationToken.IsCancellationRequested)
+                {
+                    animation.Stop();
                     break;
+                }
             }
         }
 
-        private static UniTask PlayRuntimeAsync(this Animation animation, string animationName)
+        private static async UniTask PlayRuntimeAsync(this Animation animation, string animationName,
+            CancellationToken cancellationToken = default)
         {
             animation.Play(animationName);
-            return UniTask.WaitWhile(() => animation.isPlaying);
+            var isCanceled = await UniTask
+                .WaitWhile(() => animation.isPlaying, cancellationToken: cancellationToken)
+                .SuppressCancellationThrow();
+            if (isCanceled)
+            {
+                animation[animationName].time = 1f;
+                animation.Stop(animationName);
+            }
         }
 
-        public static UniTask PlayAsync(this Animation animation, string animationName) =>
+        public static UniTask PlayAsync(this Animation animation, string animationName,
+            CancellationToken cancellationToken = default) =>
             Application.isPlaying
-                ? animation.PlayRuntimeAsync(animationName)
-                : animation.PlayPreviewAsync(animationName);
+                ? animation.PlayRuntimeAsync(animationName,cancellationToken)
+                : animation.PlayPreviewAsync(animationName,cancellationToken);
     }
 }

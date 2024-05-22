@@ -1,19 +1,15 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace PlayableNodes
 {
-    
-    /// <summary>
-    /// Disable GUI.Enabled based with previous state
-    /// </summary>
-    public class DisableScope : EditorGUIScope
+    public class EnabledScope : EditorGUIScope
     {
         private readonly bool _previousState;
 
-        public DisableScope(bool enabled)
+        public EnabledScope()
         {
             _previousState = GUI.enabled;
-            GUI.enabled = _previousState && enabled;
+            GUI.enabled = true;
         }
         
         protected override void CloseScope()

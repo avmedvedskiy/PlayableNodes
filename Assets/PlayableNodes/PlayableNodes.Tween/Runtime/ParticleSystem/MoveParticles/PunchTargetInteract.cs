@@ -1,6 +1,4 @@
-﻿using System;
-using DG.Tweening;
-using PlayableNodes;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace PlayableNodes
@@ -8,8 +6,8 @@ namespace PlayableNodes
     [ExecuteAlways]
     public class PunchTargetInteract : BaseTargetInteract
     {
-        [SerializeField] private Vector3 _punch = Vector3.one;
-        [SerializeField] private float _duration = 1f;
+        [SerializeField] private Vector3 _punch = new Vector3(0.2f,0.2f,0.2f);
+        [SerializeField] private float _duration = 0.33f;
         [SerializeField] private Easing _easing = Easing.Default;
 
         [SerializeField] private int _vibrato = 10;
@@ -19,6 +17,7 @@ namespace PlayableNodes
 
         public override void Interact()
         {
+            base.Interact();
             _tw ??= transform
                 .DOPunchScale(_punch, _duration, _vibrato, _elasticity)
                 .SetEase(_easing)

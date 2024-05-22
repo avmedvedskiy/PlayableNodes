@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -14,14 +15,14 @@ namespace PlayableNodes.Experimental
         [SerializeField] private List<Object> _bindings;
         public IReadOnlyList<Track> Tracks => _clip.Tracks;
 
-        public UniTask PlayAsync(string trackName)
+        public UniTask PlayAsync(string trackName,CancellationToken cancellationToken = default)
         {
             Retarget();
             foreach (var track in _clip.Tracks)
             {
                 if (track.IsActive && track.Name == trackName)
                 {
-                    return track.PlayAsync();
+                    return track.PlayAsync(cancellationToken);
                 }
             }
             return UniTask.CompletedTask;

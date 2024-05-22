@@ -2,6 +2,7 @@
   "dependencies": {
     "com.avmedvedskiy.managedreference": "https://github.com/avmedvedskiy/ManagedReference.git",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+    "com.lizzyfox-code.brg-container": "https://github.com/LizzyFox-code/BrgContainer.git",
     "com.unity.collab-proxy": "2.2.0",
     "com.unity.feature.development": "1.0.1",
     "com.unity.textmeshpro": "3.0.6",

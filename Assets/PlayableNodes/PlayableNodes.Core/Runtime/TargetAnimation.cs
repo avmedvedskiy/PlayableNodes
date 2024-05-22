@@ -10,10 +10,12 @@ namespace PlayableNodes
     public abstract class TargetAnimation<T> : IAnimation where T : Object
     {
         [SerializeField, HideInInspector] private bool _enable = true;
+        [SerializeField, HideInInspector] private int _pin;
         [SerializeField] private float _duration = 0.33f;
         [SerializeField] private float _delay;
 
         [field: NonSerialized] public T Target { get; private set; }
+        public int Pin => _pin;
         public bool Enable => _enable;
         public float Delay => _delay;
 
@@ -23,12 +25,22 @@ namespace PlayableNodes
             protected set => _duration = value;
         }
 
-        public UniTask PlayAsync(CancellationToken cancellationToken = default) =>
-            Delay > 0
-                ? UniTask.WaitForSeconds(Delay, cancellationToken: cancellationToken).ContinueWith(Play)
-                : Play();
+        public async UniTask PlayAsync(CancellationToken cancellationToken = default)
+        {
+            if (Delay > 0)
+            {
+                await UniTask
+                    .WaitForSeconds(Delay, cancellationToken: cancellationToken)
+                    .SuppressCancellationThrow();
+                
+                if(cancellationToken.IsCancellationRequested)
+                    return;
+            }
+            await Play(cancellationToken);
+            
+        }
 
-        protected abstract UniTask Play();
+        protected abstract UniTask Play(CancellationToken cancellationToken);
 
         public void SetTarget(Object target)
         {

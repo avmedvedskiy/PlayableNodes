@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using ManagedReference;
 using PlayableNodes.Extensions;
@@ -21,16 +22,18 @@ namespace PlayableNodes
 
         public Object Context => _context;
 
-        public async UniTask PlayAsync()
+        public async UniTask PlayAsync(CancellationToken cancellationToken = default)
         {
             if (_context == null)
                 return;
 
-            await _animations.PlayAsync(_context);
+            await _animations.PlayAsync(_context, cancellationToken: cancellationToken);
         }
 
         public void SetContext(Object context) => _context = context;
 
         public float TotalDuration() => _animations.TotalDuration();
+
+        public IReadOnlyList<IAnimation> Animations => _animations;
     }
 }

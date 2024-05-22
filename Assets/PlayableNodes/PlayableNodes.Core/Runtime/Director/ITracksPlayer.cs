@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 
 namespace PlayableNodes
@@ -6,7 +7,7 @@ namespace PlayableNodes
     public interface ITracksPlayer
     {
         IReadOnlyList<Track> Tracks { get; }
-        UniTask PlayAsync(string trackName);
+        UniTask PlayAsync(string trackName,CancellationToken cancellationToken = default);
         float TotalDuration(string trackName);
     }
 }

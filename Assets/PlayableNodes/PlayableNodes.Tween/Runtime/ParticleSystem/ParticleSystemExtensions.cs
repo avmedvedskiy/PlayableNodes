@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using UnityEngine;
 
@@ -7,7 +8,8 @@ namespace PlayableNodes.Particle
     public static class ParticleSystemExtensions
     {
 #if UNITY_EDITOR
-        private static async UniTask PlayPreviewAsync(this ParticleSystem system,float duration, bool withChildren)
+        private static async UniTask PlayPreviewAsync(this ParticleSystem system, float duration, bool withChildren,
+            CancellationToken cancellationToken = default)
         {
             if (system == null)
             {
@@ -24,29 +26,34 @@ namespace PlayableNodes.Particle
                 system.Simulate(time, withChildren);
                 system.time = time;
                 time = (float) UnityEditor.EditorApplication.timeSinceStartup- initialTime;
-                if (time >= duration)
+                if (time >= duration || cancellationToken.IsCancellationRequested)
                     break;
             }
             system.Stop(withChildren, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
 #endif
 
-        private static async UniTask PlayRuntimeAsync(this ParticleSystem system,float duration, bool withChildren)
+        private static async UniTask PlayRuntimeAsync(this ParticleSystem system, float duration, bool withChildren,
+            CancellationToken cancellationToken = default)
         {
             system.Play(withChildren);
-            await UniTask.WaitForSeconds(duration);
-            system.Stop();
+            await UniTask
+                .WaitForSeconds(duration, cancellationToken: cancellationToken)
+                .SuppressCancellationThrow();
+            system.Stop(withChildren, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
 
 
-        public static UniTask PlayAsync(this ParticleSystem system, float duration, bool withChildren = true)
+        public static UniTask PlayAsync(this ParticleSystem system, float duration,
+            bool withChildren = true,
+            CancellationToken cancellationToken = default)
         {
 #if UNITY_EDITOR
             return Application.isPlaying
-                    ? system.PlayRuntimeAsync(duration,withChildren)
-                    : system.PlayPreviewAsync(duration,withChildren);
+                    ? system.PlayRuntimeAsync(duration,withChildren,cancellationToken)
+                    : system.PlayPreviewAsync(duration,withChildren,cancellationToken);
 #else
-            return system.PlayRuntimeAsync(duration,withChildren);
+            return system.PlayRuntimeAsync(duration,withChildren,cancellationToken);
 #endif
         }
     }

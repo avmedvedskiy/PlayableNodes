@@ -56,7 +56,7 @@ namespace PlayableNodes.Experimental
                 var element = bindings.GetArrayElementAtIndex(i);
                 var bindReference = storage.Bindings[i];
                 if(element.objectReferenceValue  == null)
-                    element.objectReferenceValue = rootObject.Find(bindReference.Path).GetComponent(Type.GetType(bindReference.TypeName));
+                    element.objectReferenceValue = rootObject.Find(bindReference.Path)?.GetComponent(Type.GetType(bindReference.TypeName));
             }
             serializedObject.ApplyModifiedProperties();
 

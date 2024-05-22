@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using PlayableNodes.Extensions;
 using UnityEngine;
@@ -17,9 +18,9 @@ namespace PlayableNodes
         public string Name => _name;
         public IReadOnlyList<TrackNode> Nodes => _trackNodes;
 
-        public async UniTask PlayAsync()
+        public async UniTask PlayAsync(CancellationToken cancellationToken = default)
         {
-            await _trackNodes.PlayAsync();
+            await _trackNodes.PlayAsync(cancellationToken: cancellationToken);
         }
         
         public float TotalDuration()

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -6,7 +8,7 @@ namespace PlayableNodes.Extensions
 {
     public static class Extensions
     {
-        public static float TotalDuration(this IAnimation animation) =>
+        private static float TotalDuration(this IAnimation animation) =>
             animation == null
                 ? 0f
                 : animation.Duration + animation.Delay;
@@ -40,7 +42,7 @@ namespace PlayableNodes.Extensions
         }
 
         
-        public static async UniTask PlayAsync(this IAnimation[] animations, Object target)
+        public static async UniTask PlayAsync(this IAnimation[] animations, Object target, CancellationToken cancellationToken = default)
         {
             var taskList = ListPool<UniTask>.Get();
             foreach (var a in animations)
@@ -48,7 +50,7 @@ namespace PlayableNodes.Extensions
                 if (a is { Enable: true })
                 {
                     a.SetTarget(target);
-                    taskList.Add(a.PlayAsync());
+                    taskList.Add(a.PlayAsync(cancellationToken));
                 }
             }
 
@@ -56,17 +58,43 @@ namespace PlayableNodes.Extensions
             ListPool<UniTask>.Release(taskList);
         }
         
-        public static async UniTask PlayAsync(this TrackNode[] nodes)
+        public static async UniTask PlayAsync(this TrackNode[] nodes, CancellationToken cancellationToken = default)
         {
             var list = ListPool<UniTask>.Get();
             foreach (var track in nodes)
             {
                 if(track.IsActive)
-                    list.Add(track.PlayAsync());
+                    list.Add(track.PlayAsync(cancellationToken));
             }
 
             await UniTask.WhenAll(list);
             ListPool<UniTask>.Release(list);
+        }
+
+        private static IEnumerable<IAnimation> AllAnimations(this ITracksPlayer tracksPlayer)
+        {
+            foreach (var track in tracksPlayer.Tracks)
+            {
+                foreach (var node in track.Nodes)
+                {
+                    foreach (var a in node.Animations)
+                    {
+                        yield return a;
+                    }
+                }
+            }
+        }
+
+        public static void ChangeEndValueByPin<T>(this ITracksPlayer tracksPlayer, int pin, T value)
+        {
+            foreach (var a in tracksPlayer.AllAnimations())
+            {
+                if (a.Pin == pin && a is IChangeEndValue<T> changeEndValue)
+                {
+                    changeEndValue.ChangeEndValue(value);
+                }
+                
+            }
         }
         
     }

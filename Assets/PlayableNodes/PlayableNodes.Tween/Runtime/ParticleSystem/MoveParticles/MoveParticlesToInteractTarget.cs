@@ -13,7 +13,7 @@ namespace PlayableNodes
     {
         [SerializeField] private ParticleSystem _system;
 
-        [SerializeField] private BaseTargetInteract _target;
+        [SerializeField] private Transform _target;
 
         [SerializeField] [Range(0f, 1f)] private float _elapsedMoveTime;
         [SerializeField] [Range(0f, 1f)] private float _elapsedEndTime;
@@ -28,20 +28,18 @@ namespace PlayableNodes
 
         private ParticleSystem.Particle[] _particles;
 
-        private BaseTargetInteract Target
-        {
-            get => _target;
-            set => _target = value;
-        }
+        private ITargetInteract Target { get; set; }
 
-        public void Play(BaseTargetInteract target)
+        public void Play(Transform target)
         {
-            Target = target;
+            _target = target;
+            Target = target.GetComponent<ITargetInteract>();
             _system.Play(true);
         }
 
         private void OnEnable()
         {
+            Target ??= _target.GetComponent<ITargetInteract>();
             if (_system != null && _particles == null || _particles.Length < _system.main.maxParticles)
                 _particles = new ParticleSystem.Particle[_system.main.maxParticles];
         }
@@ -135,13 +133,15 @@ namespace PlayableNodes
                     .SetOptions(AxisConstraint.Y))
                 .Join(CreateMoveTween(index, endPosition, duration, _z)
                     .SetOptions(AxisConstraint.Z))
-                .OnComplete(_target.Interact);
+                .OnComplete(OnInteract);
 
             _positions.Add(startPosition);
             _ids.Add(id);
             _tws.Add(s);
             return s;
         }
+
+        private void OnInteract() => Target?.Interact();
 
         private TweenerCore<Vector3, Vector3, VectorOptions> CreateMoveTween(int index, Vector3 endPosition,
             float duration,
@@ -158,7 +158,7 @@ namespace PlayableNodes
 
         private Vector3 GetTargetPosition()
         {
-            var position = Target.transform.position;
+            var position = _target.position;
             return _system.main.simulationSpace switch
             {
                 ParticleSystemSimulationSpace.Local => _system.transform.InverseTransformPoint(position),

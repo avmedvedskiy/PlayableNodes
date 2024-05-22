@@ -70,6 +70,18 @@ namespace PlayableNodes
             return twCore.ChangeValues(from.ConvertValue(twCore.getter()), to.ConvertValue(twCore.getter()));
         }
         
+        public static Tweener ChangeValuesVector(this Tweener tween, Vector2 to, Vector2 from, float duration = -1f)
+        {
+            var twCore = (TweenerCore<Vector2, Vector2, VectorOptions>)tween;
+            return twCore.ChangeValues(from, to,duration);
+        }
+        
+        public static Tweener ChangeValuesVector(this Tweener tween, Vector2 to, ToFromValue<Vector2> from, float duration = -1f)
+        {
+            var twCore = (TweenerCore<Vector2, Vector2, VectorOptions>)tween;
+            return twCore.ChangeValues(from.ConvertValue(twCore.getter()), to,duration);
+        }
+        
         /*
         public static Tweener ChangeValuesRotation(this Tweener tween,  ToFromValue<Vector3> to, ToFromValue<Vector3> from)
         {

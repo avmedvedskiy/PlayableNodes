@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using PlayableNodes.Values;
@@ -23,7 +24,9 @@ namespace PlayableNodes
                 .SetRecyclable(true)
                 .PlayOrPreview();
         
-        protected override UniTask Play() => RunTween().AwaitForComplete();
+        protected override UniTask Play(CancellationToken cancellationToken) => 
+            RunTween()
+            .AwaitForComplete(TweenCancelBehaviour.CompleteWithSequenceCallbackAndCancelAwait, cancellationToken);
     }
     
 }

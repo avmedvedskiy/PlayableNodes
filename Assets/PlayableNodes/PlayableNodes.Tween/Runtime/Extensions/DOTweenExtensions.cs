@@ -79,8 +79,7 @@ namespace PlayableNodes
             float duration,
             bool recyclable = true)
         {
-            var sequence = DOTween.Sequence();
-            return sequence
+            return DOTween.Sequence()
                 .Join(transform
                     .DOMoveX(to.x, duration)
                     .SetEase(x)
