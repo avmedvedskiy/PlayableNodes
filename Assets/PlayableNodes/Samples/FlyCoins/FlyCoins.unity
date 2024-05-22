@@ -150,7 +150,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.42619422, y: 0.42619422, z: 0.42619422}
+  m_LocalScale: {x: 0.40621394, y: 0.40621394, z: 0.40621394}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 719147108}
@@ -215,7 +215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &585870303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,13 +239,49 @@ MonoBehaviour:
     - _isActive: 1
       _context: {fileID: 1303991259}
       _animations:
-      - rid: -2
       - rid: 5483779141356486657
+      - rid: 3018766858790371329
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 3018766858790371329
+      type: {class: MoveToTargetConstraintTransform, ns: PlayableNodes, asm: PlayableNodes.Runtime}
+      data:
+        _enable: 1
+        _pin: 0
+        _duration: 0.33
+        _delay: 1.2
+        _from:
+          _value: {x: 0, y: 0, z: 0}
+          _type: 1
+        _to: {fileID: 128769345}
+        _x:
+          _ease: 2
+          _curve:
+            serializedVersion: 2
+            m_Curve: []
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          _scale: 1
+        _y:
+          _ease: 2
+          _curve:
+            serializedVersion: 2
+            m_Curve: []
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          _scale: 1
+        _z:
+          _ease: 27
+          _curve:
+            serializedVersion: 2
+            m_Curve: []
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          _scale: 1
     - rid: 5483779141356486656
       type: {class: PlayParticleSystem, ns: PlayableNodes.Particle, asm: PlayableNodes.Runtime}
       data:
@@ -259,7 +295,7 @@ MonoBehaviour:
         _enable: 1
         _pin: 0
         _duration: 0.4
-        _delay: 1
+        _delay: 1.2
         _ease:
           _ease: 2
           _curve:
@@ -273,7 +309,7 @@ MonoBehaviour:
           _value: 0
           _type: 1
         _to:
-          _value: 0.5
+          _value: 0.4
           _type: 0
 --- !u!4 &585870304
 Transform:
@@ -5339,7 +5375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _system: {fileID: 989007295}
-  _target: {fileID: 0}
+  _target: {fileID: 128769345}
   _elapsedMoveTime: 0.5
   _elapsedEndTime: 0
   _x:
