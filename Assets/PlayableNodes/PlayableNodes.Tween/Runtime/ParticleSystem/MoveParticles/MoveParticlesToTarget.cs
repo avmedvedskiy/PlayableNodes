@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using PlayableNodes.Particle;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace PlayableNodes
 {
     [ExecuteAlways]
-    public class MoveParticlesToInteractTarget : MonoBehaviour
+    public class MoveParticlesToTarget : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _system;
 
@@ -27,19 +30,18 @@ namespace PlayableNodes
         private readonly List<Vector3> _positions = new();
 
         private ParticleSystem.Particle[] _particles;
-
         private ITargetInteract Target { get; set; }
 
-        public void Play(Transform target)
-        {
-            _target = target;
-            Target = target.GetComponent<ITargetInteract>();
-            _system.Play(true);
-        }
+        public ParticleSystem System => _system;
+
+        public void SetTarget(Transform target) => _target = target;
+
 
         private void OnEnable()
         {
-            Target ??= _target.GetComponent<ITargetInteract>();
+            Target ??=_target != null
+                ? _target.GetComponent<ITargetInteract>() 
+                : null;
             if (_system != null && _particles == null || _particles.Length < _system.main.maxParticles)
                 _particles = new ParticleSystem.Particle[_system.main.maxParticles];
         }
@@ -56,7 +58,7 @@ namespace PlayableNodes
 
         private void LateUpdate()
         {
-            if (_system == null)
+            if (_system == null || _target == null)
                 return;
 
             int numParticlesAlive = _system.GetParticles(_particles);

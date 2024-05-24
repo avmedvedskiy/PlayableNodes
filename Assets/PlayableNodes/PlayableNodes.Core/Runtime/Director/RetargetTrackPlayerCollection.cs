@@ -36,8 +36,8 @@ namespace PlayableNodes.Experimental
                 foreach (var node in track.Nodes)
                 {
                     node.SetContext(_bindings[index]);
+                    index++;
                 }
-                index++;
             }
         }
 

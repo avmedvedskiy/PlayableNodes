@@ -1,6 +1,7 @@
 ﻿using System;
 using DG.Tweening;
 using TMPro;
+using UnityEngine;
 
 namespace PlayableNodes.Text
 {
@@ -8,9 +9,13 @@ namespace PlayableNodes.Text
     {
         public static Tweener DOMaxVisibleCharacters(this TMP_Text target, int endValue, float duration)
         {
-            return DOTween.To(() => target.maxVisibleCharacters, x => target.maxVisibleCharacters = x, endValue, duration)
+            return DOTween.To(
+                    () => target.maxVisibleCharacters,
+                    x => target.maxVisibleCharacters = x,
+                    endValue,
+                    duration * endValue)
                 .SetTarget(target)
-                .OnComplete(()=> target.maxVisibleCharacters = int.MaxValue);
+                .OnComplete(() => target.maxVisibleCharacters = 99999);
         }
     }
 }

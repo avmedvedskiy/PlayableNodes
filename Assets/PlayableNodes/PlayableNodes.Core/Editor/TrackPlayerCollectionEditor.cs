@@ -80,10 +80,14 @@ namespace PlayableNodes
                 if (property.name == TrackHelper.CONTEXT_PROPERTY)
                 {
                     var bindReference = trackClip.Bindings[i];
-                    var referenceObject = rootObject
-                        .Find(bindReference.Path)?
-                        .GetComponent(Type.GetType(bindReference.TypeName));
-                    property.objectReferenceValue = referenceObject;
+                    var referenceObject = string.IsNullOrEmpty(bindReference.Path)
+                        ? rootObject
+                        : rootObject.Find(bindReference.Path);
+                    
+                    var referenceComponent = referenceObject != null 
+                        ? referenceObject.GetComponent(Type.GetType(bindReference.TypeName)) 
+                        : null;
+                    property.objectReferenceValue = referenceComponent;
                     i++;
                 }
             }

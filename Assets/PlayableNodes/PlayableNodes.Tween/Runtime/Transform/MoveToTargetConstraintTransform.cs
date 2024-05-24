@@ -20,7 +20,6 @@ namespace PlayableNodes
         private Tween RunTween() =>
             Target
                 .DOMoveConstraint(_from.ConvertValue(Target.position), _to.position, _x, _y, _z, Duration)
-                //.SetDelay(Delay)
                 .SetRecyclable(true)
                 .OnComplete(OnInteract)
                 .PlayOrPreview();

@@ -45,21 +45,18 @@ namespace PlayableNodes
             IsPreviewingName = animationName;
 
             //cache all items
-            RegisterContextForPreview(player);
+            RegisterContextForPreview(player, animationName);
 
             DOTweenEditorPreview.Start(SetAllGraphicsDirty);
             try
             {
-                await UniTask
-                    .WhenAny(
-                        player.PlayAsync(animationName,_animationTokenSource.Token),
-                        UniTask.WaitForSeconds(player.TotalDuration(animationName) + 1f)); //for any exceptions in editor
-
+                await player.PlayAsync(animationName, _animationTokenSource.Token);
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
             }
+
             StopPreview();
         }
 
@@ -68,24 +65,25 @@ namespace PlayableNodes
             _animationTokenSource?.Cancel();
         }
 
-        private static void RegisterContextForPreview(ITracksPlayer player)
+        private static void RegisterContextForPreview(ITracksPlayer player, string animationName)
         {
             foreach (var track in player.Tracks)
             {
-                foreach (var node in track.Nodes)
-                {
-                    if (node.Context != null)
-                        RegisterContextForPreview(node.Context);
-                }
+                if (track.Name == animationName)
+                    foreach (var node in track.Nodes)
+                    {
+                        if (node.Context != null)
+                            RegisterContextForPreview(node.Context,animationName);
+                    }
             }
         }
 
-        private static void RegisterContextForPreview(Object context)
+        private static void RegisterContextForPreview(Object context, string animationName)
         {
             switch (context)
             {
                 case ITracksPlayer tracksPlayer:
-                    RegisterContextForPreview(tracksPlayer);
+                    RegisterContextForPreview(tracksPlayer,animationName);
                     break;
                 case Graphic graphic:
                     Graphics.Add(graphic);
@@ -115,6 +113,7 @@ namespace PlayableNodes
             foreach (var graphic in Graphics)
             {
                 graphic.SetAllDirty();
+                EditorApplication.QueuePlayerLoopUpdate();
             }
         }
     }
