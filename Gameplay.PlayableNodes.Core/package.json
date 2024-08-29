@@ -1,7 +1,7 @@
 {
   "name": "com.avmedvedskiy.playblenodes.core",
   "displayName": "Gameplay.PlayableNodes.Core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "unity": "2022.3",
   "author": "avmedvedskiy",
   "description": "Playable Node Core",
