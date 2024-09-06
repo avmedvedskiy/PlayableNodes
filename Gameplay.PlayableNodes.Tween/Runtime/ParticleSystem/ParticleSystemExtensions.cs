@@ -57,7 +57,7 @@ namespace PlayableNodes.Particle
             await UniTask
                 .WaitForSeconds(duration, cancellationToken: cancellationToken)
                 .SuppressCancellationThrow();
-            if (!system.main.loop)
+            if (system && !system.main.loop)
                 system.Stop(withChildren, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
 
