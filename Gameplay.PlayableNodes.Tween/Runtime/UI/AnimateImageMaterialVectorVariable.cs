@@ -36,7 +36,8 @@ namespace PlayableNodes
         private void OnStart()
         {
             _lastMaterial = Target.material;
-            Target.material = _material;
+            if(_material != null)
+                Target.material = _material;
         }
 
         private void SetVector(Vector3 value)
