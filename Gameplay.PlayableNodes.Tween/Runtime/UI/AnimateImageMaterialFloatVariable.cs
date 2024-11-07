@@ -1,7 +1,6 @@
 ﻿using System;
 using DG.Tweening;
 using PlayableNodes.Animations;
-using PlayableNodes.Values;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -9,15 +8,15 @@ using Object = UnityEngine.Object;
 namespace PlayableNodes
 {
     [Serializable]
-    public class AnimateImageMaterialVectorVariable : TweenAnimation<Image>
+    public class AnimateImageMaterialFloatVariable : TweenAnimation<Image>
     {
         [SerializeField] private Material _material;
-        [SerializeField] private Vector4 _from;
-        [SerializeField] private Vector4 _to;
+        [SerializeField] private float _from;
+        [SerializeField] private float _to;
         [SerializeField] private string _fieldName;
         [SerializeField] private bool _resetMaterialOnComplete;
 
-        private Vector4 _current;
+        private float _current;
         private Material _lastMaterial;
         private Material _currentMaterial;
 
@@ -47,10 +46,10 @@ namespace PlayableNodes
             Target.material = Object.Instantiate(_material);
         }
 
-        private void Set(Vector4 value)
+        private void Set(float value)
         {
             _current = value;
-            Target.materialForRendering.SetVector(_fieldName, value);
+            Target.materialForRendering.SetFloat(_fieldName, value);
         }
     }
 }
