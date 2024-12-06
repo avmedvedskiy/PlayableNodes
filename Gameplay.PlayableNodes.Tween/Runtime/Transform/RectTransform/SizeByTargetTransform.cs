@@ -19,7 +19,7 @@ namespace PlayableNodes
             Target
                 .DOSizeDelta(To.sizeDelta + _additionalSize, Duration)
                 .SetOptions(_axisConstraint)
-                .ChangeValuesVector(To.sizeDelta + _additionalSize, _from);
+                .ChangeSizeDeltaOnStart(To, _additionalSize, _from);
         
 
         public void ChangeEndValue(Transform value) => _to = value;

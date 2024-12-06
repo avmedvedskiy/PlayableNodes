@@ -111,5 +111,10 @@ namespace PlayableNodes
             var twCore = (TweenerCore<Color, Color, ColorOptions>)tween;
             return twCore.ChangeValues(from.ConvertValue(twCore.getter()), to.ConvertValue(twCore.getter()));
         }
+        
+        public static Tweener ChangeSizeDeltaOnStart(this Tweener tween, RectTransform to,Vector2 additional, ToFromValue<Vector2> from)
+        {
+            return tween.OnStart(() => tween.ChangeValuesVector(to.sizeDelta + additional, from));
+        }
     }
 }
