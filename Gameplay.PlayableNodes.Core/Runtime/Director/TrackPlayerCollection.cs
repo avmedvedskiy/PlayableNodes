@@ -22,6 +22,7 @@ namespace PlayableNodes
                     IsPlaying = true;
                     await track.PlayAsync(cancellationToken);
                     IsPlaying = false;
+					return;
                 }
             }
             Debug.LogWarning($"Not found track name {trackName}");
