@@ -15,19 +15,21 @@ namespace PlayableNodes.Experimental
         [SerializeField] private TrackClip _clip;
         [SerializeField] private List<Object> _bindings;
         public IReadOnlyList<Track> Tracks => _clip.Tracks;
+        public bool IsPlaying { get; private set; }
 
-        public UniTask PlayAsync(string trackName,CancellationToken cancellationToken = default)
+        public async UniTask PlayAsync(string trackName,CancellationToken cancellationToken = default)
         {
             Retarget();
             foreach (var track in _clip.Tracks)
             {
                 if (track.IsActive && track.Name == trackName)
                 {
-                    return track.PlayAsync(cancellationToken);
+                    IsPlaying = true;
+                    await track.PlayAsync(cancellationToken);
+                    IsPlaying = false;
                 }
             }
             Debug.LogWarning($"Not found track name {trackName}");
-            return UniTask.CompletedTask;
         }
 
         private void Retarget()

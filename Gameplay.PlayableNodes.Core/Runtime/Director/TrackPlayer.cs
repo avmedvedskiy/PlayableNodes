@@ -10,12 +10,15 @@ namespace PlayableNodes
     {
         [SerializeField] private Track _track;
         public IReadOnlyList<Track> Tracks => new[] { _track };
+        public bool IsPlaying { get; private set; }
 
-        public UniTask PlayAsync(string trackName,CancellationToken cancellationToken = default)
+        public async UniTask PlayAsync(string trackName, CancellationToken cancellationToken = default)
         {
-            return _track.PlayAsync(cancellationToken);
+            IsPlaying = true;
+            await _track.PlayAsync(cancellationToken);
+            IsPlaying = false;
         }
-        
+
         private void OnDrawGizmosSelected()
         {
             this.DrawAnimationGizmos();

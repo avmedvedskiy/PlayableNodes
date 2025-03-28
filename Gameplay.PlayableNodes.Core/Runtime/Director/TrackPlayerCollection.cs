@@ -11,18 +11,20 @@ namespace PlayableNodes
     {
         [SerializeField] private List<Track> _tracks;
         public IReadOnlyList<Track> Tracks => _tracks;
+        public bool IsPlaying { get; private set; }
 
-        public UniTask PlayAsync(string trackName,CancellationToken cancellationToken = default)
+        public async UniTask PlayAsync(string trackName,CancellationToken cancellationToken = default)
         {
             foreach (var track in _tracks)
             {
                 if (track.IsActive && track.Name == trackName)
                 {
-                    return track.PlayAsync(cancellationToken);
+                    IsPlaying = true;
+                    await track.PlayAsync(cancellationToken);
+                    IsPlaying = false;
                 }
             }
             Debug.LogWarning($"Not found track name {trackName}");
-            return UniTask.CompletedTask;
         }
 
         private void OnDrawGizmosSelected()
