@@ -37,7 +37,7 @@ namespace PlayableNodes.Animations
                 SelectAttributeDrawer.DrawAnimationDropDown(
                     position,
                     new GUIContent(animationName.displayName), animationName,
-                    GetAllAnimations(target.Target?.gameObject));
+                    GetAllAnimations(target.Target == null ? null : target.Target.gameObject));
 
                 EditorGUI.indentLevel--;
             }

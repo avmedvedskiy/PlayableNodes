@@ -62,6 +62,8 @@ namespace PlayableNodes.Extensions
         {
             foreach (var track in tracksPlayer.Tracks)
             {
+                if(track.Nodes == null)
+                    continue;
                 foreach (var node in track.Nodes)
                 {
                     foreach (var a in node.Animations)

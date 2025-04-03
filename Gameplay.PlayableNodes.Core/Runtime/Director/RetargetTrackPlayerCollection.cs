@@ -10,6 +10,7 @@ namespace PlayableNodes.Experimental
     /// <summary>
     /// Experimental only, not support direct link to scene objects in scene
     /// </summary>
+    [HelpURL("https://github.com/avmedvedskiy/PlayableNodes")]
     public class RetargetTrackPlayerCollection : MonoBehaviour, ITracksPlayer
     {
         [SerializeField] private TrackClip _clip;

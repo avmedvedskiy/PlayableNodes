@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace PlayableNodes
 {
+    [HelpURL("https://github.com/avmedvedskiy/PlayableNodes")]
     public class TrackPlayerCollection : MonoBehaviour, ITracksPlayer
     {
         [SerializeField] private List<Track> _tracks;

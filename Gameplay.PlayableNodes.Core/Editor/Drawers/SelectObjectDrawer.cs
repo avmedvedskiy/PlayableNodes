@@ -11,7 +11,9 @@ namespace PlayableNodes
     {
         private static readonly GUIContent NullLabel = new("Null");
 
-        public static void PropertyField(SerializedProperty property, SerializedProperty managedReferenceProperty,
+        public static void PropertyField(
+            SerializedProperty property,
+            SerializedProperty managedReferenceProperty,
             GUIContent guiContent)
         {
             EditorGUI.BeginChangeCheck();

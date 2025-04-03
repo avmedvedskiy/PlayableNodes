@@ -14,9 +14,12 @@ namespace PlayableNodes
     public class TrackNode
     {
         [SerializeField] private bool _isActive;
-        [SerializeField] private Object _context;
+        [SerializeField] 
+        [Tooltip("Select animated Object, animation will be sorted by target type")]
+        private Object _context;
 
         [SerializeReference, DynamicReference(nameof(_context), typeof(Transform))]
+        [Tooltip("Select Animation based on the track Context")]
         private IAnimation[] _animations;
         public bool IsActive => _isActive;
 

@@ -129,7 +129,9 @@ namespace PlayableNodes
             using (new DisableScope(enabled))
             {
                 var animations = node.FindPropertyRelative(TrackHelper.ANIMATIONS_PROPERTY);
-                SelectObjectDrawer.PropertyField(contextProperty, animations, GUIContent.none);
+                SelectObjectDrawer.PropertyField(contextProperty, 
+                    animations,
+                    new GUIContent(string.Empty, contextProperty.tooltip));
 
                 //EditorGUILayout.PropertyField(contextProperty, GUIContent.none);
 

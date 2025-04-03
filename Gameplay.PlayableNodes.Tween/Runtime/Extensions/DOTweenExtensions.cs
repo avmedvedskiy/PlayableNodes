@@ -4,6 +4,7 @@ using DG.DOTweenEditor;
 using System.Runtime.CompilerServices;
 using DG.Tweening;
 using DG.Tweening.Core;
+using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Plugins.Options;
 using PlayableNodes.Values;
 using UnityEngine;
@@ -138,6 +139,13 @@ namespace PlayableNodes
                     t.Complete(true);
                 }
             }
+        }
+
+        public static TweenerCore<Vector3, Path, PathOptions> SetLookAt(this TweenerCore<Vector3, Path, PathOptions> t, bool value)
+        {
+            if (value)
+                t.SetLookAt(0.1f);
+            return t;
         }
     }
 }
