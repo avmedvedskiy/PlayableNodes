@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using DG.DemiEditor;
-using ManagedReference;
 using ManagedReference.Editor;
 using UnityEditor;
 using UnityEditorInternal;
