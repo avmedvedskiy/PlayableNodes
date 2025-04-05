@@ -117,13 +117,7 @@ namespace PlayableNodes
                 return list;
             }
         }
-
-        private static string GetDescriptionFromSerializeReference(SerializedProperty property)
-        {
-            return property.GetDescription();
-        }
-
-
+        
         private static bool IsValid(SerializedProperty property) =>
             IsValidProperty != null && (bool)IsValidProperty.Invoke(property, null);
 
@@ -134,12 +128,22 @@ namespace PlayableNodes
 
             using (new ColorScope(_pinColors[pinProperty.intValue]))
             {
-                pinProperty.intValue = EditorGUI.IntPopup(
-                    new Rect(rect.width / 2f - 20f, rect.y, 30f, EditorGUIUtility.singleLineHeight),
-                    string.Empty,
-                    pinProperty.intValue,
-                    _pinContent,
-                    _pinArray);
+                if (GUI.Button(new Rect(rect.width / 2f - 20f, rect.y, 30f, EditorGUIUtility.singleLineHeight),
+                        _pinContent[pinProperty.intValue], EditorStyles.popup))
+                {
+                    var menu = new GenericMenu();
+                    for (int i = 0; i < _pinContent.Length; i++)
+                    {
+                        int index = i;
+                        menu.AddItem(new GUIContent(_pinContent[i]), pinProperty.intValue == i, () =>
+                        {
+                            pinProperty.intValue = index;
+                            pinProperty.serializedObject.ApplyModifiedProperties();
+                        });
+                    }
+
+                    menu.ShowAsContext();
+                }
             }
         }
 
