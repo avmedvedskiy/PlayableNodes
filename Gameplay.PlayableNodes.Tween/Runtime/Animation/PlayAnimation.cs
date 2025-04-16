@@ -11,6 +11,6 @@ namespace PlayableNodes.Animations
         [SerializeField] private string _animationName;
 
         protected override UniTask Play(CancellationToken cancellationToken) =>
-            Target.PlayAsync(_animationName,cancellationToken);
+            Target.PlayOrPreviewAsync(_animationName,cancellationToken);
     }
 }

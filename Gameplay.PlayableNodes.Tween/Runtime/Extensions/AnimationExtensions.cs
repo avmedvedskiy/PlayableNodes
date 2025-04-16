@@ -54,7 +54,21 @@ namespace PlayableNodes.Animations
             }
         }
 
-        public static UniTask PlayAsync(this Animation animation, string animationName,
+        public static void PlayOrPreview(
+            this Animation animation,
+            string animationName)
+        {
+#if UNITY_EDITOR
+            if (Application.isPlaying)
+                animation.PlayRuntimeAsync(animationName, Application.exitCancellationToken).Forget();
+            else
+                animation.PlayPreviewAsync(animationName, Application.exitCancellationToken).Forget();
+#else
+            animation.PlayRuntimeAsync(animationName, Application.exitCancellationToken);
+#endif
+        }
+
+        public static UniTask PlayOrPreviewAsync(this Animation animation, string animationName,
             CancellationToken cancellationToken = default)
         {
 #if UNITY_EDITOR
