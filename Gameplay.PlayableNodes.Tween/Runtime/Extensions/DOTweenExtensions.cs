@@ -26,7 +26,7 @@ namespace PlayableNodes
 
             return tween.Play();
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T RestartOrPreview<T>(this T tween) where T : Tween
         {
@@ -53,10 +53,10 @@ namespace PlayableNodes
             RotateMode mode = RotateMode.Fast)
         {
             return space == MoveSpace.Global
-                ? transform.DORotate(to.ConvertValue(transform.position), duration,mode)
-                : transform.DOLocalRotate(to.ConvertValue(transform.localPosition), duration,mode);
+                ? transform.DORotate(to.ConvertValue(transform.position), duration, mode)
+                : transform.DOLocalRotate(to.ConvertValue(transform.localPosition), duration, mode);
         }
-        
+
         public static Tweener DORotateQuaternion(this Transform transform, MoveSpace space, Transform to,
             float duration)
         {
@@ -64,8 +64,8 @@ namespace PlayableNodes
                 ? transform.DORotateQuaternion(to.rotation, duration)
                 : transform.DOLocalRotateQuaternion(to.localRotation, duration);
         }
-        
-        public static Sequence DOMoveConstraint(this Transform transform, 
+
+        public static Sequence DOMoveConstraint(this Transform transform,
             ToFromValue<Vector3> from,
             ToFromValue<Vector3> to,
             Easing x,
@@ -77,10 +77,10 @@ namespace PlayableNodes
             var currentPosition = transform.position;
             var toPosition = to.ConvertValue(currentPosition);
             var fromPosition = from.ConvertValue(currentPosition);
-            return DOMoveConstraint(transform, fromPosition, toPosition, x,y,z,duration, recyclable);
+            return DOMoveConstraint(transform, fromPosition, toPosition, x, y, z, duration, recyclable);
         }
-        
-        public static Sequence DOMoveConstraint(this Transform transform, 
+
+        public static Sequence DOMoveConstraint(this Transform transform,
             Vector3 from,
             Vector3 to,
             Easing x,
@@ -114,22 +114,21 @@ namespace PlayableNodes
             {
                 tweener.OnComplete(interact.Interact);
             }
-            
+
             return tweener;
         }
-        
-        
-        
+
+
         public static Tweener DOFollowTarget(this Transform transform, Transform target, float duration)
         {
             var endPosition = target.position;
             var t = transform.DOMove(endPosition, duration);
             return t.OnUpdate(OnUpdate);
-            
+
             void OnUpdate()
             {
                 var position = target.position;
-                if(position == endPosition)
+                if (position == endPosition)
                     return;
                 endPosition = position;
 
@@ -143,11 +142,41 @@ namespace PlayableNodes
             }
         }
 
-        public static TweenerCore<Vector3, Path, PathOptions> SetLookAtPath(this TweenerCore<Vector3, Path, PathOptions> t, bool value)
+        public static TweenerCore<Vector3, Path, PathOptions> SetLookAtPath(
+            this TweenerCore<Vector3, Path, PathOptions> t, bool value)
         {
             if (value)
                 t.SetLookAt(0.1f);
             return t;
+        }
+
+        public static TweenerCore<float, float, FloatOptions> DOEvaluateScaleByCurve(
+            this Transform transform, 
+            AnimationCurve curve, 
+            float duration)
+        {
+            float timer = 0f;
+            var initialValue = transform.localScale;
+            return DOTween.To(() => timer, x => timer = x, 1f, duration)
+                .OnStart(()=> initialValue = transform.localScale)
+                .OnUpdate(()=>transform.localScale = initialValue * curve.Evaluate(timer));;
+        }
+        
+        public static TweenerCore<float, float, FloatOptions> DOEvaluateScaleByCurve(
+            this Transform transform, 
+            AnimationCurve x, 
+            AnimationCurve y, 
+            AnimationCurve z, 
+            float duration)
+        {
+            float timer = 0f;
+            var initialValue = transform.localScale;
+            return DOTween.To(() => timer, x => timer = x, 1f, duration)
+                .OnStart(()=> initialValue = transform.localScale)
+                .OnUpdate(()=>transform.localScale = new Vector3(
+                    initialValue.x * x.Evaluate(timer), 
+                    initialValue.y * y.Evaluate(timer), 
+                    initialValue.z * z.Evaluate(timer)));;
         }
     }
 }
