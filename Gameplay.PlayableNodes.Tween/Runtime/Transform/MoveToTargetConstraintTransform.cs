@@ -16,11 +16,12 @@ namespace PlayableNodes
         [SerializeField] private Easing _x = Easing.Default;
         [SerializeField] private Easing _y = Easing.Default;
         [SerializeField] private Easing _z = Easing.Default;
+        [SerializeField] private bool _interactTarget = true;
 
         private Tween RunTween() =>
             Target
                 .DOMoveConstraint(_from.ConvertValue(Target.position), _to.position, _x, _y, _z, Duration)
-                .DOInteractWhenComplete(_to)
+                .DOInteractWhenComplete(_to,_interactTarget)
                 .PlayOrPreview();
         
         protected override UniTask Play(CancellationToken cancellationToken) => 

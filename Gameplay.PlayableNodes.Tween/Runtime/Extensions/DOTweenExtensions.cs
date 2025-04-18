@@ -108,15 +108,17 @@ namespace PlayableNodes
                 .SetRecyclable(recyclable);
         }
 
-        public static Tween DOInteractWhenComplete(this Tween tweener, Transform target)
+        public static Tween DOInteractWhenComplete(this Tween tweener, Transform target, bool active)
         {
-            if (target.TryGetComponent<ITargetInteract>(out var interact))
+            if (active && target.TryGetComponent<ITargetInteract>(out var interact))
             {
                 tweener.OnComplete(interact.Interact);
             }
             
             return tweener;
         }
+        
+        
         
         public static Tweener DOFollowTarget(this Transform transform, Transform target, float duration)
         {
@@ -141,7 +143,7 @@ namespace PlayableNodes
             }
         }
 
-        public static TweenerCore<Vector3, Path, PathOptions> SetLookAt(this TweenerCore<Vector3, Path, PathOptions> t, bool value)
+        public static TweenerCore<Vector3, Path, PathOptions> SetLookAtPath(this TweenerCore<Vector3, Path, PathOptions> t, bool value)
         {
             if (value)
                 t.SetLookAt(0.1f);

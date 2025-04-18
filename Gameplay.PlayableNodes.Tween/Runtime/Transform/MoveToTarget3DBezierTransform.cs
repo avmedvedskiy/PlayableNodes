@@ -17,15 +17,15 @@ namespace PlayableNodes
 
         [SerializeField] private Vector3 _spaceDirection = Vector3.up;
         [SerializeField] private bool _withLookAt = false;
+        [SerializeField] private bool _interactTarget = true;
 
 
         protected override Tween GenerateTween()
         {
-            var t = Target
-                .DOPath(CalculatePoints(), Duration, PathType.CatmullRom);
-            if (_withLookAt)
-                t.SetLookAt(0.01f);
-            return t.DOInteractWhenComplete(_to);
+            return Target
+                .DOPath(CalculatePoints(), Duration, PathType.CatmullRom)
+                .SetLookAtPath(_withLookAt)
+                .DOInteractWhenComplete(_to,_interactTarget);
         }
 
         public void ChangeEndValue(Transform value) => _to = value;

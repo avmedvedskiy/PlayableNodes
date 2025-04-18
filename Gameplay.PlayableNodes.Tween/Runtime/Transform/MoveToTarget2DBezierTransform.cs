@@ -10,13 +10,14 @@ namespace PlayableNodes
         [SerializeField] private Transform _to;
         [SerializeField] private float _centerPoint = 0.5f;
         [SerializeField] private float _offset = 1f;
+        [SerializeField] private bool _interactTarget = true;
 
 
         protected override Tween GenerateTween()
         {
             return Target
                 .DOPath(CalculatePoints(), Duration, PathType.CatmullRom)
-                .DOInteractWhenComplete(_to);
+                .DOInteractWhenComplete(_to,_interactTarget);
         }
 
         public void ChangeEndValue(Transform value) => _to = value;
