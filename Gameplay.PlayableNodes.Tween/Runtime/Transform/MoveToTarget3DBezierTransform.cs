@@ -8,6 +8,7 @@ namespace PlayableNodes
     public class MoveToTarget3DBezierTransform : TweenAnimation<Transform>, IChangeEndValue<Transform>,
         IDrawGizmosSelected
     {
+        [SerializeField] private MoveSpace _space = MoveSpace.Global;
         [SerializeField] private Transform _to;
         [Range(-5f, 5f)] [SerializeField] private float _centerPointA = 0.5f;
         [SerializeField] private float _offsetA = 1f;
@@ -23,7 +24,7 @@ namespace PlayableNodes
         protected override Tween GenerateTween()
         {
             return Target
-                .DOPath(CalculatePoints(), Duration, PathType.CatmullRom)
+                .DOPath(CalculatePoints(), Duration, _space, PathType.CatmullRom)
                 .SetLookAtPath(_withLookAt)
                 .DOInteractWhenComplete(_to,_interactTarget);
         }
@@ -32,8 +33,15 @@ namespace PlayableNodes
 
         private Vector3[] CalculatePoints()
         {
-            Vector3 pointA = Target.position;
-            Vector3 pointB = _to.position;
+            Vector3 pointA, pointB;
+            pointA = _space == MoveSpace.Global
+                ? Target.position 
+                : Target.localPosition;
+            pointB = _space == MoveSpace.Global
+                ? _to.position
+                : Target.parent != null
+                    ? Target.parent.InverseTransformPoint(_to.position)
+                    : Target.localPosition;
 
             Vector3 vectorBetween = pointB - pointA;
             Vector3 midpointVectorA = pointA + vectorBetween * _centerPointA + _spaceDirection * _offsetA;

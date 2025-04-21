@@ -150,6 +150,21 @@ namespace PlayableNodes
             return t;
         }
 
+        public static TweenerCore<Vector3, Path, PathOptions> DOPath(
+            this Transform target,
+            Vector3[] path,
+            float duration,
+            MoveSpace space = MoveSpace.Global,
+            PathType pathType = PathType.Linear,
+            PathMode pathMode = PathMode.Full3D,
+            int resolution = 10,
+            Color? gizmoColor = null)
+        {
+            return space == MoveSpace.Global
+                ? target.DOPath(path, duration, pathType, pathMode, resolution, gizmoColor)
+                : target.DOLocalPath(path, duration, pathType, pathMode, resolution, gizmoColor);
+        }
+
         public static TweenerCore<float, float, FloatOptions> DOEvaluateScaleByCurve(
             this Transform transform, 
             AnimationCurve curve, 
