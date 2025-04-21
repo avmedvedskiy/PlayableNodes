@@ -19,7 +19,7 @@ namespace PlayableNodes.Values.Editor
             var indent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
 
-            _typeProperty ??= property.FindPropertyRelative("_type");
+            _typeProperty = property.FindPropertyRelative("_type");
 
             Rect typeRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
             Rect valueRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight, position.width,
@@ -30,7 +30,7 @@ namespace PlayableNodes.Values.Editor
 
             if (_typeProperty.intValue == (int)ToFromType.Direct)
             {
-                _valueProperty ??= property.FindPropertyRelative("_value");
+                _valueProperty = property.FindPropertyRelative("_value");
                 EditorGUI.PropertyField(valueRect, _valueProperty, GUIContent.none);
             }
             
@@ -62,7 +62,7 @@ namespace PlayableNodes.Values.Editor
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            _typeProperty ??= property.FindPropertyRelative("_type");
+            _typeProperty = property.FindPropertyRelative("_type");
             float height = _typeProperty.intValue == (int)ToFromType.Direct ? 2f : 1f;
             return base.GetPropertyHeight(property, label) * height;
         }

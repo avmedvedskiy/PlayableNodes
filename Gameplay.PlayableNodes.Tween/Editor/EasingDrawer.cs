@@ -7,9 +7,6 @@ namespace PlayableNodes.Editor
     [CustomPropertyDrawer(typeof(Easing))]
     public class EasingDrawer : PropertyDrawer
     {
-        private SerializedProperty _easeProperty;
-        private SerializedProperty _curveProperty;
-        private SerializedProperty _scaleProperty;
         
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -19,9 +16,10 @@ namespace PlayableNodes.Editor
             var indent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
 
-            _easeProperty ??= property.FindPropertyRelative("_ease");
-            _curveProperty ??= property.FindPropertyRelative("_curve");
-            _scaleProperty ??= property.FindPropertyRelative("_scale");
+            var easeProperty = property.FindPropertyRelative("_ease");
+            var curveProperty = property.FindPropertyRelative("_curve");
+            var scaleProperty = property.FindPropertyRelative("_scale");
+            
 
             float offset = 5f;
             float halfWidth = position.width / 2f;
@@ -32,23 +30,23 @@ namespace PlayableNodes.Editor
                 EditorGUIUtility.singleLineHeight);
 
             //EditorGUI.PropertyField(easeRect, easeProperty, GUIContent.none);
-            if (EditorGUI.DropdownButton(easeRect, new GUIContent(((Ease)_easeProperty.intValue).ToString()), FocusType.Keyboard))
+            if (EditorGUI.DropdownButton(easeRect, new GUIContent(((Ease)easeProperty.intValue).ToString()), FocusType.Keyboard))
             {
                 var window = new EaseSelectionWindow();
-                window.Prepare((Ease)_easeProperty.intValue, x =>
+                window.Prepare((Ease)easeProperty.intValue, x =>
                 {
-                    _easeProperty.intValue = (int)x;
-                    _easeProperty.serializedObject.ApplyModifiedProperties();
+                    easeProperty.intValue = (int)x;
+                    easeProperty.serializedObject.ApplyModifiedProperties();
                 });
                 PopupWindow.Show(easeRect, window);
             }
 
-            if (_easeProperty.intValue == (int)Ease.INTERNAL_Custom)
+            if (easeProperty.intValue == (int)Ease.INTERNAL_Custom)
             {
-                EditorGUI.PropertyField(curveRect, _curveProperty, GUIContent.none);
+                EditorGUI.PropertyField(curveRect, curveProperty, GUIContent.none);
             }
 
-            EditorGUI.PropertyField(scaleRect, _scaleProperty, GUIContent.none);
+            EditorGUI.PropertyField(scaleRect, scaleProperty, GUIContent.none);
 
 
             EditorGUI.indentLevel = indent;
@@ -57,8 +55,8 @@ namespace PlayableNodes.Editor
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            _easeProperty ??= property.FindPropertyRelative("_ease");
-            float height = _easeProperty.intValue == (int)Ease.INTERNAL_Custom ? 2f : 1f;
+            var easeProperty = property.FindPropertyRelative("_ease");
+            float height = easeProperty.intValue == (int)Ease.INTERNAL_Custom ? 2f : 1f;
             return base.GetPropertyHeight(property, label) * height;
         }
     }
