@@ -31,13 +31,17 @@ namespace PlayableNodes
 
         public ParticleSystem System => _system;
 
-        public void SetTarget(Transform target) => _target = target;
+        public void SetTarget(Transform target)
+        {
+            _target = target;
+            Target = _target.GetComponent<ITargetInteract>();
+        }
 
 
         private void OnEnable()
         {
-            Target ??=_target != null
-                ? _target.GetComponent<ITargetInteract>() 
+            Target = _target != null
+                ? _target.GetComponent<ITargetInteract>()
                 : null;
             if (_system != null && _particles == null || _particles.Length < _system.main.maxParticles)
                 _particles = new ParticleSystem.Particle[_system.main.maxParticles];
