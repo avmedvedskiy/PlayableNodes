@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using DG.Tweening;
 using PlayableNodes.Animations;
 using UnityEngine;
@@ -8,6 +9,7 @@ using Object = UnityEngine.Object;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Animates a float property on an Image's material and resets when done")]
     public class AnimateImageMaterialFloatVariable : TweenAnimation<Image>
     {
         [SerializeField] private Material _material;

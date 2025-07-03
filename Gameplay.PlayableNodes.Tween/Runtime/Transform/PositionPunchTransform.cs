@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using DG.Tweening;
 using PlayableNodes.Values;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Applies a punch effect to the Transform's position")]
     public class PositionPunchTransform : TweenAnimation<Transform>
     {
         [SerializeField] private ToFromValue<Vector3> _from = ToFromValue<Vector3>.Dynamic;

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using DG.Tweening;
 using PlayableNodes.Values;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Tweens the RectTransform's anchored position between two values")]
     public class AnchoredPositionTransform : TweenAnimation<RectTransform>
     {
         [SerializeField] private ToFromValue<Vector2> _from;

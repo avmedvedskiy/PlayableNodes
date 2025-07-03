@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using DG.Tweening;
 using UnityEngine;
 
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Scales the Transform using animation curves for each axis")]
     public class ScaleByCurveTransform : TweenAnimation<Transform>
     {
         [Tooltip("When disabled will be used X axes as main")]

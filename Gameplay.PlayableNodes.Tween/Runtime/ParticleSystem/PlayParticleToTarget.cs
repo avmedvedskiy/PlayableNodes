@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 namespace PlayableNodes.Particle
 {
     [Serializable]
+    [Description("Plays particles moving towards a target Transform")]
     public class PlayParticleToTarget : TargetAnimation<MoveParticlesToTarget>, IChangeEndValue<Transform>
     {
         [SerializeField] private Transform _to;
