@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Invokes Interact on the target Transform if available")]
     public class InteractTarget : TargetAnimation<Transform>, IChangeEndValue<Transform>
     {
         [SerializeField] private Transform _to;

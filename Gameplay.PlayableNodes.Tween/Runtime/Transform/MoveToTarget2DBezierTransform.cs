@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using DG.Tweening;
 using UnityEngine;
 
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Moves a Transform to a target via a 2D Bezier path")]
     public class MoveToTarget2DBezierTransform : TweenAnimation<Transform>, IChangeEndValue<Transform>
     {
         [SerializeField] private Transform _to;

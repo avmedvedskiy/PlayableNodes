@@ -7,6 +7,7 @@ using UnityEngine;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Applies a punch effect to the Transform's scale")]
     public class ScalePunchTransform : TweenAnimation<Transform>
     {
         [SerializeField] private ToFromValue<Vector3> _from;

@@ -6,6 +6,7 @@ using UnityEngine;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Applies a shake scale effect to the Transform")]
     public class ShakeTransform : TweenAnimation<Transform>
     {
         [SerializeField] private float _strength = 1f;

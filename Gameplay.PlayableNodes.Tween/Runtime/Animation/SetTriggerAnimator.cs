@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 namespace PlayableNodes.Animations
 {
     [Serializable]
+    [Description("Sets a trigger parameter in an Animator")]
     public class SetTriggerAnimator : TargetAnimation<Animator>
     {
         [SerializeField] private string _triggerName;

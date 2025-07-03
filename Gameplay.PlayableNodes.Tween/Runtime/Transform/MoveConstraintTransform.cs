@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -8,6 +9,7 @@ using UnityEngine;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Moves a Transform using constraint-based easing")]
     public class MoveConstraintTransform : TargetAnimation<Transform>
     {
         [SerializeField] private ToFromValue<Vector3> _from;
