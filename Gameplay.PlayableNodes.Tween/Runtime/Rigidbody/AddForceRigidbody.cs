@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -7,6 +8,7 @@ using Random = UnityEngine.Random;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Applies a random force to a Rigidbody")]
     public class AddRandomForceRigidbody : TargetAnimation<Rigidbody>
     {
         [SerializeField] private Vector3 _forceMin;
@@ -26,6 +28,7 @@ namespace PlayableNodes
     }
 
     [Serializable]
+    [Description("Applies a specified force to a Rigidbody")]
     public class AddForceRigidbody : TargetAnimation<Rigidbody>
     {
         [SerializeField] private Vector3 _force;

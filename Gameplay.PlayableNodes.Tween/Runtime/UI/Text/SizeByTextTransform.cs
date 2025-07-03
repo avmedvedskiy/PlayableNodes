@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using DG.Tweening;
 using PlayableNodes.Values;
 using TMPro;
@@ -7,6 +8,7 @@ using UnityEngine;
 namespace PlayableNodes.Text
 {
     [Serializable]
+    [Description("Tweens a RectTransform's size based on a TMP_Text's preferred values")]
     public class SizeByTextTransform : TweenAnimation<RectTransform>
     {
         [SerializeField] private ToFromValue<Vector2> _from;

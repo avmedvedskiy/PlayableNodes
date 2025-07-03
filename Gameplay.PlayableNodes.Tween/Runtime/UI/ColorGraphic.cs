@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using DG.Tweening;
 using PlayableNodes.Values;
 using UnityEditor;
@@ -8,6 +9,7 @@ using UnityEngine.UI;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Tweens the color of a UI Graphic component")]
     public class ColorGraphic : TweenAnimation<Graphic>
     {
         [SerializeField] private ToFromValue<Color> _from;
