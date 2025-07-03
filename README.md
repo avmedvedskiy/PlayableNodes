@@ -51,6 +51,22 @@ public class ScaleTransform : TweenAnimation<Transform>
 }
 ```
 
+### TrackPlayerCollection
+Чтобы запустить один из треков коллекции по имени, добавьте на объект компонент
+`TrackPlayerCollection` и вызовите метод `PlayAsync`:
+
+```csharp
+public class Example : MonoBehaviour
+{
+    [SerializeField] private TrackPlayerCollection _collection;
+
+    private async UniTask Start()
+    {
+        await _collection.PlayAsync("Intro");
+    }
+}
+```
+
 ## 🔍 Инспектор
 ![image](https://github.com/avmedvedskiy/PlayableNodes/assets/17832838/a639a671-1c21-438c-8feb-444a1323a185)
 ![image](https://github.com/avmedvedskiy/PlayableNodes/assets/17832838/4f66e48a-be8e-4527-8bc6-5205bc65c99e)
