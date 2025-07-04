@@ -29,15 +29,17 @@ namespace PlayableNodes
 
         private void OnStart()
         {
+          if (_material != null)
+          {
             _lastMaterial = Target.sharedMaterial;
-            var baseMaterial = _material == null ? Target.material : _material;
-            Target.material = Object.Instantiate(baseMaterial);
-            Set(_curve.Evaluate(0f));
+            Target.material = Object.Instantiate(_material);
+          }
+          Set(_curve.Evaluate(0f));
         }
 
         private void OnComplete()
         {
-            if (Target && _resetMaterialOnComplete)
+            if (Target && _resetMaterialOnComplete && _material != null)
             {
                 Target.material.DestroyOrPreview();
                 Target.material = _lastMaterial;
