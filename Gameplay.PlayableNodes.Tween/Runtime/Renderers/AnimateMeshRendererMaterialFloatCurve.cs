@@ -30,7 +30,7 @@ namespace PlayableNodes
         private void OnStart()
         {
             _lastMaterial = Target.sharedMaterial;
-            var baseMaterial = _material == null ? _lastMaterial : _material;
+            var baseMaterial = _material == null ? Target.material : _material;
             Target.material = Object.Instantiate(baseMaterial);
             Set(_curve.Evaluate(0f));
         }
