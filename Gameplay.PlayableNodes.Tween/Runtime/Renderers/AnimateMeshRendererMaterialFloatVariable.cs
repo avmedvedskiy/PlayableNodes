@@ -35,7 +35,7 @@ namespace PlayableNodes
             _lastMaterial = Target.sharedMaterial;
             Target.material = Object.Instantiate(_material);
           }
-          Set(_curve.Evaluate(0f));
+          Set(_from);
         }
 
         private void OnComplete()
