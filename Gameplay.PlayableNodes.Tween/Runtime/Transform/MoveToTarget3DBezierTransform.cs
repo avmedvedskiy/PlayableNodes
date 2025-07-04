@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using DG.Tweening;
 using UnityEngine;
 
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Moves a Transform to a target along a 3D Bezier path with optional look-at")]
     public class MoveToTarget3DBezierTransform : TweenAnimation<Transform>, IChangeEndValue<Transform>,
         IDrawGizmosSelected
     {

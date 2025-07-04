@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using DG.Tweening;
 using UnityEngine;
 
 namespace PlayableNodes
 {
-    [Serializable]
-    public class LookAtTargetTransform : TweenAnimation<Transform>, IChangeEndValue<Transform>
+[Serializable]
+[Description("Orients a Transform to face a target Transform")]
+public class LookAtTargetTransform : TweenAnimation<Transform>, IChangeEndValue<Transform>
     {
         [SerializeField] private MoveSpace _moveSpace;
         [SerializeField] private Transform _to;

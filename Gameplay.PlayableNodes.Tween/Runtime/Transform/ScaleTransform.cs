@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using DG.Tweening;
 using PlayableNodes.Values;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Scales the Transform uniformly between start and end values")]
     public class ScaleTransform : TweenAnimation<Transform>, IChangeEndValue<float>
     {
         [SerializeField] private ToFromValue<float> _from = ToFromValue<float>.Dynamic;

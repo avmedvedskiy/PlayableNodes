@@ -7,6 +7,7 @@ using UnityEngine;
 namespace PlayableNodes.Particle
 {
     [Serializable]
+    [Description("Stops a ParticleSystem with a delay")]
     public class StopParticleSystem : TargetAnimation<ParticleSystem>
     {
         protected override UniTask Play(CancellationToken cancellationToken)

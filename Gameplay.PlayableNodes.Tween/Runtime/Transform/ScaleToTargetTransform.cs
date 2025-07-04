@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using DG.Tweening;
 using PlayableNodes.Values;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 namespace PlayableNodes
 {
     [Serializable]
+    [Description("Tweens the Transform's scale to match another target Transform")]
     public class ScaleToTargetTransform : TweenAnimation<Transform>, IChangeEndValue<Transform>
     {
         [SerializeField] private ToFromValue<Vector3> _from = ToFromValue<Vector3>.Dynamic;
