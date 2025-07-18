@@ -1,0 +1,43 @@
+name: Publish sub‑packages to npm
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    # одну и ту же задачу будем выполнять для каждого пакета
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - Gameplay.PlayableNodes.Core
+          - Gameplay.PlayableNodes.Tween
+
+    # все run‑скрипты в рамках цикла будут выполняться внутри конкретной папки‑пакета
+    defaults:
+      run:
+        working-directory: ${{ matrix.package }}
+
+    steps:
+      # 1. Клонируем репозиторий
+      - uses: actions/checkout@v3
+
+      # 2. Ставим Node.js (замени версию, если нужно) и авторизуемся в npm‑registry
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20         # или 18/16 — как требуется проекту
+          registry-url: https://registry.npmjs.com/
+          cache: 'yarn'            # убери/замени, если используешь npm или pnpm
+
+      # 3. Ставим зависимости пакета
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+        # если у пакета нет своего yarn.lock, замени на `npm ci` или `npm install`
+
+      # 4. Публикуем текущий пакет
+      - name: Publish ${{ matrix.package }}
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
