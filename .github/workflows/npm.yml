@@ -21,20 +21,16 @@ jobs:
         working-directory: ${{ matrix.package }}
 
     steps:
-      # 1. Клонируем репозиторий
-      - uses: actions/checkout@v3
-
-      # 2. Ставим Node.js (замени версию, если нужно) и авторизуемся в npm‑registry
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20         # или 18/16 — как требуется проекту
-          registry-url: https://registry.npmjs.com/
-          cache: 'yarn'            # убери/замени, если используешь npm или pnpm
-
-      # 3. Ставим зависимости пакета
-      - name: Install deps
-        run: yarn install --frozen-lockfile
-        # если у пакета нет своего yarn.lock, замени на `npm ci` или `npm install`
+   # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+     - uses: actions/checkout@v2
+   #Install Node.js, with the version 12 and using the registry URL of npm, this could be changed to a custom registry or the GitHub registry.
+     - uses: actions/setup-node@v1
+         with:
+         node-version: 12
+         registry-url: https://registry.npmjs.com/
+  
+     # Command to install the package dependencies
+     - run: yarn install
 
       # 4. Публикуем текущий пакет
       - name: Publish ${{ matrix.package }}
