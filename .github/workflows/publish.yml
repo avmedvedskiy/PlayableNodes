@@ -1,39 +1,80 @@
-name: Publish sub‑packages to npm
+name: Publish sub-packages to npm
 
 on:
   workflow_dispatch:
+    inputs:
+      package:
+        description: "Which package to publish?"
+        type: choice
+        options:
+          - all
+          - Gameplay.PlayableNodes.Core
+          - Gameplay.PlayableNodes.Tween
+        default: all
+      tag:
+        description: "npm dist-tag (optional)"
+        required: false
+        default: latest
+      dry_run:
+        description: "Do a dry run (no publish)"
+        type: boolean
+        default: false
   release:
     types: [published]
 
 jobs:
   publish:
-    # одну и ту же задачу будем выполнять для каждого пакета
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         package:
           - Gameplay.PlayableNodes.Core
           - Gameplay.PlayableNodes.Tween
 
-    # все run‑скрипты в рамках цикла будут выполняться внутри конкретной папки‑пакета
+    # запускаем джоб только для выбранного пакета
+    # - при release: всегда для всех
+    # - при ручном старте: для одного или всех
+    if: >
+      ${{
+        github.event_name == 'release' ||
+        github.event.inputs.package == 'all' ||
+        matrix.package == github.event.inputs.package
+      }}
+
     defaults:
       run:
         working-directory: ${{ matrix.package }}
 
-    steps:
-   # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-     - uses: actions/checkout@v2
-   #Install Node.js, with the version 12 and using the registry URL of npm, this could be changed to a custom registry or the GitHub registry.
-     - uses: actions/setup-node@v1
-       with:
-         node-version: 12
-         registry-url: https://registry.npmjs.com/
-  
-     # Command to install the package dependencies
-     - run: yarn install
+    permissions:
+      contents: read
 
-      # 4. Публикуем текущий пакет
-     - name: Publish ${{ matrix.package }}
-       run: npm publish --access public
-       env:
-         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+          always-auth: true
+          cache: yarn
+          cache-dependency-path: ${{ matrix.package }}/yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build (optional)
+        run: |
+          if [ -f package.json ] && jq -e '.scripts.build' package.json >/dev/null 2>&1; then
+            yarn build
+          fi
+
+      - name: npm publish (${{ matrix.package }})
+        if: ${{ !fromJSON(github.event.inputs.dry_run || 'false') }}
+        run: npm publish --access public --tag "${{ github.event.inputs.tag || 'latest' }}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Dry run (no publish)
+        if: ${{ fromJSON(github.event.inputs.dry_run || 'false') }}
+        run: npm publish --access public --tag "${{ github.event.inputs.tag || 'latest' }}" --dry-run
