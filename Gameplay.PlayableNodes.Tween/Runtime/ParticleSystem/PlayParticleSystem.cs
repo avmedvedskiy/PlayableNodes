@@ -10,9 +10,9 @@ namespace PlayableNodes.Particle
     [Description("Plays a ParticleSystem for the specified duration")]
     public class PlayParticleSystem : TargetAnimation<ParticleSystem>
     {
-        protected override UniTask Play(CancellationToken cancellationToken)
+        protected override async UniTask Play(CancellationToken cancellationToken)
         {
-            return Target.PlayAsync(Duration, cancellationToken: cancellationToken);
+            await Target.PlayAsync(Duration, cancellationToken: cancellationToken);
         }
     }
 }

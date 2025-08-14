@@ -11,6 +11,8 @@ namespace PlayableNodes.Animations
 #if UNITY_EDITOR
             if(Application.isPlaying)
                 Object.DestroyImmediate(o);
+            else
+                Object.Destroy(o);
 #else
             Object.Destroy(o);
 #endif

@@ -3,17 +3,18 @@ using System.ComponentModel;
 using DG.Tweening;
 using PlayableNodes.Animations;
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 using Object = UnityEngine.Object;
 
 namespace PlayableNodes
 {
     [Serializable]
-    [Description("Tweens a float property on a MeshRenderer material and optionally restores the original material on completion")]
-    public class AnimateMeshRendererMaterialFloatVariable : TweenAnimation<MeshRenderer>
+    [MovedFrom(true, "PlayableNodes", "PlayableNodes.Runtime", "AnimateMeshRendererMaterialFloatCurve")]
+    [Description("Tweens a float material property on a MeshRenderer using an AnimationCurve and optionally restores the original material on completion")]
+    public class AnimateRendererMaterialFloatCurve : TweenAnimation<Renderer>
     {
         [SerializeField] private Material _material;
-        [SerializeField] private float _from;
-        [SerializeField] private float _to;
+        [SerializeField] private AnimationCurve _curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
         [SerializeField] private string _fieldName;
         [SerializeField] private bool _resetMaterialOnComplete = true;
 
@@ -21,11 +22,11 @@ namespace PlayableNodes
 
         protected override Tween GenerateTween()
         {
+            float t = 0f;
             return DOTween
-                .To(() => _from, Set, _to, Duration)
+                .To(() => t, x => Set(_curve.Evaluate(x)), 1f, Duration)
                 .OnStart(OnStart)
-                .OnComplete(OnComplete)
-                .ChangeStartValue(_from);
+                .OnComplete(OnComplete);
         }
 
         private void OnStart()
@@ -35,7 +36,7 @@ namespace PlayableNodes
             _lastMaterial = Target.sharedMaterial;
             Target.material = Object.Instantiate(_material);
           }
-          Set(_from);
+          Set(_curve.Evaluate(0f));
         }
 
         private void OnComplete()

@@ -22,6 +22,13 @@ namespace PlayableNodes.Particle
                 Debug.LogWarning($"Particle system is null");
                 return;
             }
+            
+            bool disableWhenComplete = system.gameObject.activeSelf == false;
+            if (disableWhenComplete)
+            {
+                system.gameObject.SetActive(true);
+                await UniTask.Yield();
+            }
 
             var childSystems = system.GetComponentsInChildren<ParticleSystem>().ToList();
             childSystems.ForEach(x => x.useAutoRandomSeed = false);
@@ -44,7 +51,11 @@ namespace PlayableNodes.Particle
             }
 
             if (!system.main.loop)
+            {
                 system.Stop(withChildren, ParticleSystemStopBehavior.StopEmittingAndClear);
+                if(disableWhenComplete)
+                    system.gameObject.SetActive(false);
+            }
         }
 #endif
 
@@ -53,12 +64,23 @@ namespace PlayableNodes.Particle
             bool withChildren,
             CancellationToken cancellationToken = default)
         {
+            bool disableWhenComplete = system.gameObject.activeSelf == false;
+            if (disableWhenComplete)
+            {
+                system.gameObject.SetActive(true);
+                await UniTask.Yield();
+            }
+
             system.Play(withChildren);
             await UniTask
                 .WaitForSeconds(duration, cancellationToken: cancellationToken)
                 .SuppressCancellationThrow();
             if (system && !system.main.loop)
+            {
                 system.Stop(withChildren, ParticleSystemStopBehavior.StopEmittingAndClear);
+                if(disableWhenComplete)
+                    system.gameObject.SetActive(false);
+            }
         }
 
         public static async UniTask StopAsync(this ParticleSystem system,
