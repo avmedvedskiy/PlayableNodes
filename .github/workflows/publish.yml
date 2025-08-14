@@ -13,20 +13,19 @@ jobs:
         working-directory: Gameplay.PlayableNodes.Tween
 
     steps:
-      - uses: actions/checkout@v4
+   # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+     - uses: actions/checkout@v2
+   #Install Node.js, with the version 12 and using the registry URL of npm, this could be changed to a custom registry or the GitHub registry.
+     - uses: actions/setup-node@v1
+       with:
+         node-version: 12
+         registry-url: https://registry.npmjs.com/
+  
+     # Command to install the package dependencies
+     - run: yarn install
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: 'https://registry.npmjs.org'
-          always-auth: true
-          cache: yarn
-          cache-dependency-path: Gameplay.PlayableNodes.Tween/yarn.lock
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: npm publish (Gameplay.PlayableNodes.Tween)
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # 4. Публикуем текущий пакет
+     - name: Publish ${{ matrix.package }}
+       run: npm publish --access public
+       env:
+         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
