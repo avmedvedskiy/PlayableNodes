@@ -1,46 +1,16 @@
-name: Publish sub-packages to npm
+name: Publish Gameplay.PlayableNodes.Tween to npm
 
 on:
   workflow_dispatch:
-    inputs:
-      package:
-        description: "Which package to publish?"
-        type: choice
-        options:
-          - all
-          - Gameplay.PlayableNodes.Core
-          - Gameplay.PlayableNodes.Tween
-        default: all
-      tag:
-        description: "npm dist-tag"
-        required: false
-        default: latest
-      dry_run:
-        description: "Do a dry run (no publish)"
-        type: boolean
-        default: false
   release:
     types: [published]
 
 jobs:
-  publish:
+  publish-tween:
     runs-on: ubuntu-latest
-
-    # строим матрицу на лету:
-    strategy:
-      matrix:
-        package: ${{ fromJSON(
-          (github.event_name == 'release' || github.event.inputs.package == 'all')
-          && '["Gameplay.PlayableNodes.Core","Gameplay.PlayableNodes.Tween"]'
-          || format('["{0}"]', github.event.inputs.package)
-        ) }}
-
     defaults:
       run:
-        working-directory: ${{ matrix.package }}
-
-    permissions:
-      contents: read
+        working-directory: Gameplay.PlayableNodes.Tween
 
     steps:
       - uses: actions/checkout@v4
@@ -48,26 +18,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: https://registry.npmjs.org/
+          registry-url: 'https://registry.npmjs.org'
           always-auth: true
           cache: yarn
-          cache-dependency-path: ${{ matrix.package }}/yarn.lock
+          cache-dependency-path: Gameplay.PlayableNodes.Tween/yarn.lock
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build (optional)
-        run: |
-          if [ -f package.json ] && jq -e '.scripts.build' package.json >/dev/null 2>&1; then
-            yarn build
-          fi
-
-      - name: npm publish (${{ matrix.package }})
-        if: ${{ !fromJSON(github.event.inputs.dry_run || 'false') }}
-        run: npm publish --access public --tag "${{ github.event.inputs.tag || 'latest' }}"
+      - name: npm publish (Gameplay.PlayableNodes.Tween)
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Dry run (no publish)
-        if: ${{ fromJSON(github.event.inputs.dry_run || 'false') }}
-        run: npm publish --access public --tag "${{ github.event.inputs.tag || 'latest' }}" --dry-run
