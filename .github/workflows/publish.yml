@@ -12,7 +12,7 @@ on:
           - Gameplay.PlayableNodes.Tween
         default: all
       tag:
-        description: "npm dist-tag (optional)"
+        description: "npm dist-tag"
         required: false
         default: latest
       dry_run:
@@ -26,21 +26,14 @@ jobs:
   publish:
     runs-on: ubuntu-latest
 
+    # строим матрицу на лету:
     strategy:
       matrix:
-        package:
-          - Gameplay.PlayableNodes.Core
-          - Gameplay.PlayableNodes.Tween
-
-    # запускаем джоб только для выбранного пакета
-    # - при release: всегда для всех
-    # - при ручном старте: для одного или всех
-    if: >
-      ${{
-        github.event_name == 'release' ||
-        github.event.inputs.package == 'all' ||
-        matrix.package == github.event.inputs.package
-      }}
+        package: ${{ fromJSON(
+          (github.event_name == 'release' || github.event.inputs.package == 'all')
+          && '["Gameplay.PlayableNodes.Core","Gameplay.PlayableNodes.Tween"]'
+          || format('["{0}"]', github.event.inputs.package)
+        ) }}
 
     defaults:
       run:
