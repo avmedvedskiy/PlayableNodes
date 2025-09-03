@@ -97,11 +97,17 @@ namespace PlayableNodes.Extensions
         
         public static void ChangeTargetByPin(this ITracksPlayer tracksPlayer, int pin, Object value)
         {
-          foreach (var a in tracksPlayer.AllAnimations())
+          foreach (var track in tracksPlayer.Tracks)
           {
-            if (a.Pin == pin)
+            if(track.Nodes == null)
+              continue;
+            foreach (var node in track.Nodes)
             {
-              a.SetTarget(value);
+              foreach (var a in node.Animations)
+              {
+                if(a.Pin == pin)
+                  node.SetContext(value);
+              }
             }
           }
         }
