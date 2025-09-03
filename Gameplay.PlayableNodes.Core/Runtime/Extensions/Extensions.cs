@@ -94,5 +94,16 @@ namespace PlayableNodes.Extensions
                 }
             }
         }
+        
+        public static void ChangeTargetByPin(this ITracksPlayer tracksPlayer, int pin, Object value)
+        {
+          foreach (var a in tracksPlayer.AllAnimations())
+          {
+            if (a.Pin == pin)
+            {
+              a.SetTarget(value);
+            }
+          }
+        }
     }
 }
