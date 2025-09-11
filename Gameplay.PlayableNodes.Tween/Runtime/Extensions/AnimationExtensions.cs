@@ -47,7 +47,7 @@ namespace PlayableNodes.Animations
             var isCanceled = await UniTask
                 .WaitWhile(() => animation.isPlaying, cancellationToken: cancellationToken)
                 .SuppressCancellationThrow();
-            if (isCanceled)
+            if (isCanceled && animation != null)
             {
                 animation[animationName].time = 1f;
                 animation.Stop(animationName);
