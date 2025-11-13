@@ -12,8 +12,8 @@ namespace PlayableNodes
     [Description("Tweens the color of a UI Graphic component")]
     public class ColorGraphic : TweenAnimation<Graphic>
     {
-        [SerializeField] private ToFromValue<Color> _from;
-        [SerializeField] private ToFromValue<Color> _to;
+        [SerializeField] private ToFromValue<Color> _from =  new(Color.white);
+        [SerializeField] private ToFromValue<Color> _to =  new(Color.white);
         protected override Tween GenerateTween() => Target
             .DOColor(_to, Duration)
             .ChangeValuesColor(_to, _from);

@@ -16,7 +16,12 @@ namespace PlayableNodes
 
         [field: NonSerialized] public T Target { get; private set; }
         public int Pin => _pin;
-        public bool Enable => _enable;
+        public bool Enable
+        {
+            get => _enable;
+            set => _enable = value;
+        }
+
         public float Delay => _delay;
 
         public float Duration

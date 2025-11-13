@@ -10,7 +10,7 @@ namespace PlayableNodes
 {
     [Serializable]
     [Description("Moves a Transform using constraint-based easing")]
-    public class MoveConstraintTransform : TargetAnimation<Transform>
+    public class MoveConstraintTransform : TargetAnimation<Transform>, IChangeEndValue<Vector3>
     {
         [SerializeField] private ToFromValue<Vector3> _from;
         [SerializeField] private ToFromValue<Vector3> _to;
@@ -29,6 +29,11 @@ namespace PlayableNodes
         protected override UniTask Play(CancellationToken cancellationToken) => 
             RunTween()
             .AwaitForComplete(TweenCancelBehaviour.CompleteWithSequenceCallbackAndCancelAwait, cancellationToken);
+
+        public void ChangeEndValue(Vector3 value)
+        {
+            _to = new ToFromValue<Vector3>(value);
+        }
     }
     
 }

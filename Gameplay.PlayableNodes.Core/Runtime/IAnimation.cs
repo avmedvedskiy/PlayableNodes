@@ -20,7 +20,7 @@ namespace PlayableNodes
     public interface IAnimation
     {
         int Pin { get; }
-        bool Enable { get; }
+        bool Enable { get; set; }
         float Delay { get; }
         float Duration { get; }
         UniTask PlayAsync(CancellationToken cancellationToken = default);

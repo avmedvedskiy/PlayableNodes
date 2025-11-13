@@ -111,5 +111,23 @@ namespace PlayableNodes.Extensions
             }
           }
         }
+        
+        
+        public static void EnableAnimationByPin(this ITracksPlayer tracksPlayer, int pin, bool value)
+        {
+            foreach (var track in tracksPlayer.Tracks)
+            {
+                if(track.Nodes == null)
+                    continue;
+                foreach (var node in track.Nodes)
+                {
+                    foreach (var a in node.Animations)
+                    {
+                        if(a.Pin == pin)
+                            a.Enable = value;
+                    }
+                }
+            }
+        }
     }
 }

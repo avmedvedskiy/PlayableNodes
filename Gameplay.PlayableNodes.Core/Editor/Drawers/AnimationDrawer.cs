@@ -28,6 +28,7 @@ namespace PlayableNodes
             new(0.5f, 0.5f, 0.0f), // Оливковый
             new(0.5f, 0.25f, 0.0f), // Коричневый
             Color.blue,
+            Color.blue,
         };
 
         private static MethodInfo IsValidProperty { get; }
