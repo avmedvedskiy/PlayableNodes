@@ -9,7 +9,7 @@ namespace PlayableNodes.Animations
         public static void DestroyOrPreview(this Object o)
         {
 #if UNITY_EDITOR
-            if(Application.isPlaying)
+            if(!Application.isPlaying)
                 Object.DestroyImmediate(o);
             else
                 Object.Destroy(o);

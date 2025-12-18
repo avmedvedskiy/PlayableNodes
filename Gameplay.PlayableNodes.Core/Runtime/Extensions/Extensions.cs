@@ -60,19 +60,20 @@ namespace PlayableNodes.Extensions
 
         private static IEnumerable<IAnimation> AllAnimations(this ITracksPlayer tracksPlayer)
         {
-            foreach (var track in tracksPlayer.Tracks)
-            {
-                if(track.Nodes == null)
-                    continue;
-                foreach (var node in track.Nodes)
+            if (tracksPlayer.Tracks != null)
+                foreach (var track in tracksPlayer.Tracks)
                 {
-                    foreach (var a in node.Animations)
+                    if (track.Nodes == null)
+                        continue;
+                    foreach (var node in track.Nodes)
                     {
-                        if (a is { Enable: true })
-                            yield return a;
+                        foreach (var a in node.Animations)
+                        {
+                            if (a is { Enable: true })
+                                yield return a;
+                        }
                     }
                 }
-            }
         }
 
         public static void DrawAnimationGizmos(this ITracksPlayer player)
@@ -94,36 +95,36 @@ namespace PlayableNodes.Extensions
                 }
             }
         }
-        
+
         public static void ChangeTargetByPin(this ITracksPlayer tracksPlayer, int pin, Object value)
-        {
-          foreach (var track in tracksPlayer.Tracks)
-          {
-            if(track.Nodes == null)
-              continue;
-            foreach (var node in track.Nodes)
-            {
-              foreach (var a in node.Animations)
-              {
-                if(a.Pin == pin)
-                  node.SetContext(value);
-              }
-            }
-          }
-        }
-        
-        
-        public static void EnableAnimationByPin(this ITracksPlayer tracksPlayer, int pin, bool value)
         {
             foreach (var track in tracksPlayer.Tracks)
             {
-                if(track.Nodes == null)
+                if (track.Nodes == null)
                     continue;
                 foreach (var node in track.Nodes)
                 {
                     foreach (var a in node.Animations)
                     {
-                        if(a.Pin == pin)
+                        if (a.Pin == pin)
+                            node.SetContext(value);
+                    }
+                }
+            }
+        }
+
+
+        public static void EnableAnimationByPin(this ITracksPlayer tracksPlayer, int pin, bool value)
+        {
+            foreach (var track in tracksPlayer.Tracks)
+            {
+                if (track.Nodes == null)
+                    continue;
+                foreach (var node in track.Nodes)
+                {
+                    foreach (var a in node.Animations)
+                    {
+                        if (a.Pin == pin)
                             a.Enable = value;
                     }
                 }

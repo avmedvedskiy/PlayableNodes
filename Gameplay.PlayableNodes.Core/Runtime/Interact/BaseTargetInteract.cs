@@ -1,17 +1,23 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace PlayableNodes
 {
     public interface ITargetInteract
     {
-        event Action OnInteract;
+        event UnityAction OnInteract;
         void Interact();
     }
 
     public abstract class BaseTargetInteract : MonoBehaviour, ITargetInteract
     {
-        public event Action OnInteract;
-        public virtual void Interact() => OnInteract?.Invoke();
+        [SerializeField] private UnityEvent _onInteract;
+        public event UnityAction OnInteract
+        {
+            add => _onInteract.AddListener(value);
+            remove => _onInteract.RemoveListener(value);
+        }
+        public virtual void Interact() => _onInteract?.Invoke();
     }
 }

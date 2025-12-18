@@ -1,7 +1,7 @@
 {
   "name": "com.avmedvedskiy.playblenodes.core",
   "displayName": "Gameplay.PlayableNodes.Core",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "unity": "2022.3",
   "author": "avmedvedskiy",
   "description": "Playable Node Core",
@@ -14,6 +14,6 @@
   "changelogUrl": "https://github.com/avmedvedskiy/PlayableNodes",
   "_upm":
   {
-	  "changelog" : "### Fixes & Improvements\n - Add ChangeTargetByPin() method"
+	  "changelog" : "### Fixes & Improvements\n - Add UnityEvent when interact"
   }
 }
