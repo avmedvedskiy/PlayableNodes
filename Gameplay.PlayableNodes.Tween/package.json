@@ -1,7 +1,7 @@
 {
   "name": "com.avmedvedskiy.playblenodes.tween",
   "displayName": "Gameplay.PlayableNodes.Tween",
-  "version": "1.0.18",
+  "version": "1.0.20",
   "unity": "2022.3",
   "author": "avmedvedskiy",
   "description": "Playable Node Tween",
@@ -14,6 +14,6 @@
   "changelogUrl": "https://github.com/avmedvedskiy/PlayableNodes",
   "_upm":
   {
-	  "changelog" : "### Fixes & Improvements\n - Add SetAnchoredPositionTransform"
+	  "changelog" : "### Fixes & Improvements\n - Add DOSetActive extensions"
   }
 }
