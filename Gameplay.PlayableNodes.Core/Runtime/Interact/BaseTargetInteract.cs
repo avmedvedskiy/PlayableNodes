@@ -10,7 +10,7 @@ namespace PlayableNodes
         void Interact();
     }
 
-    public abstract class BaseTargetInteract : MonoBehaviour, ITargetInteract
+    public class BaseTargetInteract : MonoBehaviour, ITargetInteract
     {
         [SerializeField] private UnityEvent _onInteract;
         public event UnityAction OnInteract
