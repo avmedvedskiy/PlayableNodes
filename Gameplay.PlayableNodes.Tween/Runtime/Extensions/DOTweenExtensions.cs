@@ -53,8 +53,8 @@ namespace PlayableNodes
             RotateMode mode = RotateMode.Fast)
         {
             return space == MoveSpace.Global
-                ? transform.DORotate(to.ConvertValue(transform.position), duration, mode)
-                : transform.DOLocalRotate(to.ConvertValue(transform.localPosition), duration, mode);
+                ? transform.DORotate(to.ConvertValue(transform.eulerAngles), duration, mode)
+                : transform.DOLocalRotate(to.ConvertValue(transform.localEulerAngles), duration, mode);
         }
 
         public static Tweener DORotateQuaternion(this Transform transform, MoveSpace space, Transform to,

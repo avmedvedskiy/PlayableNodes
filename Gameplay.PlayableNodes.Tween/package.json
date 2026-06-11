@@ -14,6 +14,6 @@
   "changelogUrl": "https://github.com/avmedvedskiy/PlayableNodes",
   "_upm":
   {
-	  "changelog" : "### Fixes & Improvements\n - Add DOSetActive extensions"
+      "changelog" : "### Fixes & Improvements\n - Add package README documentation for tween nodes\n - Fix dynamic rotation to use transform rotation values\n - Fix RebuildLayoutEveryFrame reuse across plays"
   }
 }

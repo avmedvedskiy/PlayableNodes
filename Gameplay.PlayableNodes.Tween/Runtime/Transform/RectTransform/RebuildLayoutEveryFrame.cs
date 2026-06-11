@@ -11,15 +11,14 @@ namespace PlayableNodes
     [Description("Rebuilds the RectTransform layout every frame")]
     public class RebuildLayoutEveryFrame : TargetAnimation<RectTransform>
     {
-        private float _time;
-
         protected override async UniTask Play(CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested && _time < Duration)
+            var time = 0f;
+            while (!cancellationToken.IsCancellationRequested && time < Duration)
             {
                 LayoutRebuilder.MarkLayoutForRebuild(Target);
                 await UniTask.Yield(PlayerLoopTiming.Update);
-                _time += Time.deltaTime;
+                time += Time.deltaTime;
             }
         }
     }
