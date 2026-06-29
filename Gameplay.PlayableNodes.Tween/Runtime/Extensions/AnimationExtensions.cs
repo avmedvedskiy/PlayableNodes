@@ -43,6 +43,7 @@ namespace PlayableNodes.Animations
         private static async UniTask PlayRuntimeAsync(this Animation animation, string animationName,
             CancellationToken cancellationToken = default)
         {
+			animation.Stop();
             animation.Play(animationName);
             var isCanceled = await UniTask
                 .WaitWhile(() => animation.isPlaying, cancellationToken: cancellationToken)
